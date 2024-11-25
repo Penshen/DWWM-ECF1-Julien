@@ -1,0 +1,161 @@
+:root {
+  --header-height: 150px;
+  --nav-height: 150px;
+}
+
+body {
+  background-color: #2e2a39;
+  font-family: "Poppins", sans-serif;
+}
+
+.illu-secondaire {
+  opacity: 0.5;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  object-fit: cover;
+  z-index: -1;
+  top: calc(var(--header-height) + var(--nav-height));
+}
+
+header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #2e2a39;
+  flex-wrap: wrap;
+}
+
+nav {
+  width: 100%;
+  background-color: #2e2a39;
+  display: flex;
+  justify-content: center;
+  gap: calc(2rem + 10px);
+  padding: 1rem 0;
+
+  a {
+    color: #83feff;
+    text-decoration: none;
+    position: relative;
+
+    &:hover {
+      color: #15acff;
+    }
+
+    &:not(:last-child)::after {
+      content: "—";
+      position: absolute;
+      right: calc(-1.2rem - 10px);
+      top: 50%;
+      transform: translateY(-50%);
+      color: #fd55b7;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+  }
+}
+
+// -------------------- EQUALIZER -------------------- //
+
+.equalizer {
+  display: flex;
+  align-items: flex-end;
+  gap: 7px;
+  height: 60px;
+  margin: 0 auto;
+}
+
+// -------------------- REVERSE EQUALIZER -------------------- //
+
+.reverse-equalizer {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  height: 60px;
+  margin: 0 auto;
+}
+
+// -------------------- BAR -------------------- //
+
+.bar {
+  width: 5px;
+  background-color: #15acff;
+  animation: bounce 1s infinite ease-in-out;
+}
+
+.reverse-equalizer .bar {
+  width: 5px;
+  background-color: #eb15ff;
+  animation: bounce 1s infinite ease-in-out;
+}
+
+// -------------------- ANIMATION -------------------- //
+
+@keyframes bounce {
+  0%,
+  100% {
+    height: 20%;
+  }
+  50% {
+    height: 100%;
+  }
+}
+
+// -------------------- DELAY -------------------- //
+
+.equalizer .bar:nth-child(1),
+.reverse-equalizer .bar:nth-child(1),
+.equalizer .bar:nth-child(6),
+.reverse-equalizer .bar:nth-child(6),
+.equalizer .bar:nth-child(11),
+.reverse-equalizer .bar:nth-child(11),
+.equalizer .bar:nth-child(16),
+.reverse-equalizer .bar:nth-child(16) {
+  animation-delay: 0s;
+}
+
+.equalizer .bar:nth-child(3),
+.reverse-equalizer .bar:nth-child(3),
+.equalizer .bar:nth-child(8),
+.reverse-equalizer .bar:nth-child(8),
+.equalizer .bar:nth-child(13),
+.reverse-equalizer .bar:nth-child(13),
+.equalizer .bar:nth-child(18),
+.reverse-equalizer .bar:nth-child(18) {
+  animation-delay: 0.4s;
+}
+
+.equalizer .bar:nth-child(7),
+.reverse-equalizer .bar:nth-child(7),
+.equalizer .bar:nth-child(12),
+.reverse-equalizer .bar:nth-child(12),
+.equalizer .bar:nth-child(2),
+.reverse-equalizer .bar:nth-child(2),
+.equalizer .bar:nth-child(17),
+.reverse-equalizer .bar:nth-child(17) {
+  animation-delay: 0.2s;
+}
+
+.equalizer .bar:nth-child(15),
+.reverse-equalizer .bar:nth-child(15),
+.equalizer .bar:nth-child(5),
+.reverse-equalizer .bar:nth-child(5),
+.equalizer .bar:nth-child(10),
+.reverse-equalizer .bar:nth-child(10) {
+  animation-delay: 0.3s;
+}
+
+.equalizer .bar:nth-child(14),
+.equalizer .bar:nth-child(4),
+.reverse-equalizer .bar:nth-child(4),
+.equalizer .bar:nth-child(9),
+.reverse-equalizer .bar:nth-child(9) {
+  animation-delay: 0.1s;
+}
+.container-main__img {
+  display: flex;
+  justify-content: center;
+}
