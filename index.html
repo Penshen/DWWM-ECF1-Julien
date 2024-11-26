@@ -21,24 +21,24 @@
             <div class="note">♬</div>
           </div>
         </div>
-        <div class="equalizer">
-          <div class="bar"></div>
-          <div class="bar"></div>
-          <div class="bar"></div>
-          <div class="bar"></div>
-          <div class="bar"></div>
-          <div class="bar"></div>
-          <div class="bar"></div>
-          <div class="bar"></div>
-          <div class="bar"></div>
-          <div class="bar"></div>
-          <div class="bar"></div>
-          <div class="bar"></div>
-          <div class="bar"></div>
-          <div class="bar"></div>
-          <div class="bar"></div>
-        </div>
         <p class="subtitle">ELECTRONIQUE MUSIQUE FESTIVAL</p>
+      </div>
+      <div class="equalizer desktop-equalizer">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
       </div>
     </header>
     <header class="mobile-header">
@@ -107,45 +107,74 @@
         alt="Illustration secondaire en arrière plan en Opacité réduite"
         class="illu-secondaire"
       />
-      <div class="container-main__img">
-        <div class="container__side-img--left">
-          <img
-            src="img/bonobo.jpg"
-            alt="Artiste : Bonobo"
-            class="side-img__left"
-          />
+
+      <!-- Desktop Images Layout -->
+      <div class="desktop-images-grid">
+        <div class="column left-column">
+          <img src="img/bonobo.jpg" alt="Artiste : Bonobo" class="images" />
           <img
             src="img/wax-tailor.jpg"
             alt="Artiste : Wax Tailor"
-            class="side-img__left"
+            class="images"
           />
         </div>
-        <img
-          src="img/festival-techno-la-teste.jpg"
-          alt="Logo du festival"
-          class="main-img"
-        />
-        <div class="container__side-img--right">
-          <img src="img/m83.jpg" alt="Artiste : M83" class="side-img__right" />
+        <div class="column center-column">
+          <img
+            src="img/festival-techno-la-teste.jpg"
+            alt="Affiche du Festival de La Teste"
+          />
+        </div>
+        <div class="column right-column">
+          <img src="img/m83.jpg" alt="Artiste : M83" class="images" />
           <img
             src="img/chinese.jpg"
             alt="Artiste : Chinese Man"
-            class="side-img__right"
+            class="images"
           />
         </div>
       </div>
-      <div class="container__bottom-img">
-        <img
-          src="img/impe.jpg"
-          alt="Artiste : Impératrice"
-          class="bottom-img"
-        />
-        <img
-          src="img/kavinsky.jpeg"
-          alt="Artiste : Kavinsky"
-          class="bottom-img"
-        />
+      <div class="bottom-line">
+        <img src="img/impe.jpg" alt="Artiste : Impératrice" class="images" />
+        <img src="img/kavinsky.jpeg" alt="Artiste : Kavinsky" class="images" />
       </div>
+
+      <!-- Mobile Carousel -->
+
+      <!--  <div class="mobile-carousel">
+          <button class="carousel-btn prev">❮</button>
+          <div class="carousel-container">
+            <div class="carousel-track">
+              <img
+                src="img/bonobo.jpg"
+                alt="Artiste : Bonobo"
+                class="carousel-img"
+              />
+              <img
+                src="img/wax-tailor.jpg"
+                alt="Artiste : Wax Tailor"
+                class="carousel-img"
+              />
+              <img src="img/m83.jpg" alt="Artiste : M83" class="carousel-img" />
+              <img
+                src="img/chinese.jpg"
+                alt="Artiste : Chinese Man"
+                class="carousel-img"
+              />
+              <img
+                src="img/impe.jpg"
+                alt="Artiste : Impératrice"
+                class="carousel-img"
+              />
+              <img
+                src="img/kavinsky.jpeg"
+                alt="Artiste : Kavinsky"
+                class="carousel-img"
+              />
+            </div>
+          </div>
+          <button class="carousel-btn next">❯</button>
+        </div>
+      </div> -->
     </main>
     <br />
     <br />
@@ -188,6 +217,41 @@
       document.querySelector(".close-menu").addEventListener("click", () => {
         document.querySelector(".menu-toggle").classList.remove("active");
         document.querySelector(".menu-overlay").classList.remove("active");
+      });
+
+      const track = document.querySelector(".carousel-track");
+      const slides = Array.from(track.children);
+      const nextButton = document.querySelector(".carousel-btn.next");
+      const prevButton = document.querySelector(".carousel-btn.prev");
+      let currentIndex = 0;
+
+      // Calculer la largeur des slides
+      const slideWidth = slides[0].getBoundingClientRect().width;
+
+      // Positionner les slides côte à côte
+      slides.forEach((slide, index) => {
+        slide.style.left = slideWidth * index + "px";
+      });
+
+      // Fonction pour déplacer le carrousel
+      const moveToSlide = (currentSlide, targetIndex) => {
+        const targetSlide = slides[targetIndex];
+        const amountToMove = targetSlide.style.left;
+        track.style.transform = "translateX(-" + amountToMove + ")";
+        currentIndex = targetIndex;
+      };
+
+      // Event listeners pour les boutons
+      nextButton.addEventListener("click", () => {
+        if (currentIndex < slides.length - 1) {
+          moveToSlide(slides[currentIndex], currentIndex + 1);
+        }
+      });
+
+      prevButton.addEventListener("click", () => {
+        if (currentIndex > 0) {
+          moveToSlide(slides[currentIndex], currentIndex - 1);
+        }
       });
     </script>
   </body>
