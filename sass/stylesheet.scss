@@ -769,7 +769,12 @@ main {
 }
 
 .main-desktop {
-  display: block;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
 
   @media (max-width: 768px) {
     display: none;
@@ -781,5 +786,579 @@ main {
 
   @media (max-width: 768px) {
     display: block;
+  }
+}
+
+.card,
+.card-reverse {
+  display: flex;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 2px solid #83feff;
+  color: #e8ffff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  max-width: 800px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  position: relative;
+  z-index: 1;
+  width: 100%;
+
+  .card-image img {
+    width: 200px;
+    margin: 10px;
+    height: auto;
+    object-fit: cover;
+  }
+
+  .card-content {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .reservation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  @media (max-width: 1024px) {
+    flex-direction: column;
+    align-items: center;
+
+    .card-image img {
+      width: 100%;
+      max-width: 300px;
+      margin: 0;
+      padding: 10px;
+    }
+  }
+}
+
+@supports not (backdrop-filter: blur(8px)) {
+  .card {
+    background-color: rgba(255, 255, 255, 0.8);
+  }
+}
+
+.band-name {
+  font-size: 1.5em;
+  margin: 0 0 10px;
+}
+
+.description {
+  font-size: 1em;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.reservation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.reserve-button {
+  background-color: #e8ffff;
+  color: #1e1e2e;
+  font-weight: bold;
+  font-size: 1em;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.reserve-button:hover {
+  background-color: #00b0e0;
+}
+
+.price {
+  font-size: 2.5em;
+  font-weight: bold;
+}
+
+.card-reverse {
+  flex-direction: row-reverse;
+  margin-left: auto;
+  margin-right: 0;
+  border-color: #fd55b7;
+
+  .card-content {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .reservation {
+    flex-direction: row-reverse;
+  }
+
+  @media (max-width: 1024px) {
+    flex-direction: column;
+
+    .card-image img {
+      width: 100%;
+      max-width: 300px;
+      margin: 0;
+      padding: 10px;
+    }
+
+    .reservation {
+      flex-direction: row-reverse;
+    }
+  }
+}
+
+.card {
+  flex-direction: row;
+  margin-right: auto;
+  margin-left: 0;
+}
+
+// Styles pour la barre de recherche
+.search-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto 2rem auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 20px;
+  margin-bottom: 2rem;
+  gap: 20px;
+  flex-wrap: wrap;
+
+  .filter-button {
+    &[data-sort="desc"] .filter-icon::after {
+      content: "↓";
+      margin-left: 4px;
+    }
+
+    &[data-sort="asc"] .filter-icon::after {
+      content: "↑";
+      margin-left: 4px;
+    }
+  }
+}
+
+.search-bar {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  align-items: center;
+  flex: 1;
+
+  input {
+    width: 100%;
+    padding: 12px 50px 12px 20px;
+    border: 2px solid #83feff;
+    border-radius: 25px;
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: #e8ffff;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+
+    &::placeholder {
+      color: rgba(232, 255, 255, 0.6);
+    }
+
+    &:focus {
+      outline: none;
+      border-color: #fd55b7;
+      box-shadow: 0 0 10px rgba(131, 254, 255, 0.3);
+    }
+  }
+
+  .search-button {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    color: #83feff;
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: #fd55b7;
+    }
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+}
+
+.filter-button,
+.reset-button {
+  height: 45px;
+  padding: 0 20px;
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 2px solid #83feff;
+  border-radius: 25px;
+  color: #e8ffff;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+
+  .filter-icon {
+    font-size: 1.2em;
+  }
+
+  .button-text {
+    transition: all 0.3s ease;
+  }
+
+  &:hover {
+    background-color: rgba(253, 85, 183, 0.2);
+    border-color: #fd55b7;
+  }
+
+  &.active {
+    background-color: rgba(253, 85, 183, 0.3);
+    border-color: #fd55b7;
+  }
+}
+
+@media (max-width: 768px) {
+  .search-container {
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 0 15px;
+    gap: 10px;
+
+    .search-bar {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+
+    .filter-button,
+    .reset-button {
+      width: 45px;
+      height: 45px;
+      padding: 0;
+      justify-content: center;
+
+      .button-text {
+        display: none !important;
+      }
+
+      .filter-icon {
+        margin: 0;
+        font-size: 1.4em;
+      }
+    }
+  }
+}
+
+// Styles communs pour les badges
+%badge-base {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  padding: 8px 15px;
+  border-radius: 8px;
+  font-weight: 800;
+  font-size: 0.9rem;
+  transform: rotate(5deg);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  animation: pulse 2s infinite;
+}
+
+// Badge SOLD OUT existant
+.sold-out-badge {
+  @extend %badge-base;
+  background-color: rgba(255, 0, 0, 0.2);
+  color: #ffffff;
+  border: 2px solid #ff0000;
+}
+
+// Nouveau badge Dernières places
+.last-tickets-badge {
+  @extend %badge-base;
+  background-color: rgba(255, 165, 0, 0.2); // Orange semi-transparent
+  color: #ffffff;
+  border: 2px solid #ffa500; // Orange
+}
+
+// Animation de pulsation pour les badges
+@keyframes pulse {
+  0% {
+    transform: rotate(5deg) scale(1);
+  }
+  50% {
+    transform: rotate(5deg) scale(1.05);
+  }
+  100% {
+    transform: rotate(5deg) scale(1);
+  }
+}
+
+// Styles pour la progress bar
+.progress-container {
+  width: 100%;
+  margin: 15px 0;
+  position: relative;
+
+  .progress-bar {
+    height: 10px;
+    background: linear-gradient(to right, #83feff, #fd55b7);
+    border-radius: 5px;
+    transition: width 0.3s ease;
+    position: relative;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.1) 25%,
+        rgba(255, 255, 255, 0.2) 50%,
+        rgba(255, 255, 255, 0.1) 75%
+      );
+      background-size: 200% 100%;
+      animation: shimmer 2s infinite linear;
+      border-radius: 5px;
+    }
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+  }
+
+  .tickets-text {
+    position: absolute;
+    top: -20px;
+    right: 0;
+    font-size: 0.9em;
+    color: #e8ffff;
+    font-weight: 500;
+
+    &::before {
+      content: "🎟️";
+      margin-right: 5px;
+    }
+  }
+}
+
+// Animation de brillance pour la progress bar
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+// Ajuster l'espacement dans la carte
+.card-content {
+  .reservation {
+    margin-top: 10px; // Ajouter de l'espace après la progress bar
+  }
+}
+
+// Style spécial quand sold out
+.progress-container {
+  &[data-sold-out="true"] {
+    .progress-bar {
+      background: linear-gradient(to right, #ff4444, #ff0000);
+    }
+
+    .tickets-text {
+      color: #ff4444;
+      font-weight: 700;
+    }
+  }
+}
+
+// Style pour le bouton de réinitialisation
+.reset-button {
+  height: 45px;
+  padding: 0 20px;
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 2px solid #83feff;
+  border-radius: 25px;
+  color: #e8ffff;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+
+  &:hover {
+    background-color: rgba(253, 85, 183, 0.2);
+    border-color: #fd55b7;
+  }
+
+  .filter-icon {
+    font-size: 1.2em;
+    transition: transform 0.3s ease;
+  }
+
+  &.active {
+    background-color: rgba(253, 85, 183, 0.3);
+    border-color: #fd55b7;
+  }
+}
+
+@media (max-width: 768px) {
+  .reset-button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+// Style mobile pour les cartes
+@media (max-width: 768px) {
+  .card,
+  .card-reverse {
+    flex-direction: column;
+    width: 100%;
+    margin: 20px 0;
+    padding: 0;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 2px solid #83feff;
+    border-radius: 15px;
+    overflow: hidden;
+
+    .card-image {
+      width: 100%;
+      height: 200px;
+      margin: 0;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    .card-content {
+      width: 100%;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      align-items: center;
+      text-align: center;
+
+      .band-name {
+        font-size: 1.8em;
+        margin: 0;
+      }
+
+      .description {
+        font-size: 1em;
+        margin: 0;
+      }
+
+      .progress-container {
+        width: 100%;
+        margin: 10px 0;
+
+        .tickets-text {
+          position: relative;
+          top: -25px;
+          text-align: right;
+          display: block;
+        }
+      }
+
+      .reservation {
+        width: 100%;
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+
+        .price {
+          font-size: 1.5em;
+          font-weight: bold;
+          order: -1; // Met le prix avant le bouton
+        }
+
+        .reserve-button {
+          width: 100%;
+          margin: 0;
+        }
+      }
+    }
+
+    // Ajustement des badges pour mobile
+    .sold-out-badge,
+    .last-tickets-badge {
+      top: 10px;
+      right: 10px;
+      font-size: 0.8rem;
+      padding: 5px 10px;
+    }
+  }
+
+  // Supprime les styles alternés en mobile
+  .card-reverse {
+    flex-direction: column;
+
+    .card-image {
+      order: 0; // Force l'image en premier
+    }
+  }
+
+  // Ajuste l'espacement entre les cartes
+  .main-desktop {
+    padding: 10px;
+    gap: 20px;
+  }
+}
+
+.cards-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+
+  @media (max-width: 768px) {
+    padding: 10px;
+    gap: 20px;
   }
 }

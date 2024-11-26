@@ -94,9 +94,9 @@
     <br />
     <div class="container-nav">
       <nav class="header-nav">
-        <a href="#" class="active">Accueil</a>
-        <a href="#">Programme</a>
-        <a href="#">Réservations</a>
+        <a href="index.html" class="active">Accueil</a>
+        <a href="program.html">Programme</a>
+        <a href="tickets.html">Réservations</a>
         <a href="#">Infos & Accès</a>
       </nav>
     </div>
@@ -202,49 +202,6 @@
         ↑
       </button>
     </footer>
-    <script>
-      document
-        .querySelector(".menu-toggle")
-        .addEventListener("click", function () {
-          this.classList.toggle("active");
-          document.querySelector(".menu-overlay").classList.toggle("active");
-        });
-
-      document.querySelectorAll(".mobile-nav a").forEach((link) => {
-        link.addEventListener("click", () => {
-          document.querySelector(".menu-toggle").classList.remove("active");
-          document.querySelector(".menu-overlay").classList.remove("active");
-        });
-      });
-
-      document.querySelector(".close-menu").addEventListener("click", () => {
-        document.querySelector(".menu-toggle").classList.remove("active");
-        document.querySelector(".menu-overlay").classList.remove("active");
-      });
-
-      const track = document.querySelector(".carousel-track");
-      const prevBtn = document.querySelector(".carousel-btn.prev");
-      const nextBtn = document.querySelector(".carousel-btn.next");
-      let currentIndex = 0;
-      const slideWidth = 320; // largeur de l'image + gap
-
-      function updateCarousel() {
-        track.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
-      }
-
-      prevBtn.addEventListener("click", () => {
-        if (currentIndex > 0) {
-          currentIndex--;
-          updateCarousel();
-        }
-      });
-
-      nextBtn.addEventListener("click", () => {
-        if (currentIndex < track.children.length - 1) {
-          currentIndex++;
-          updateCarousel();
-        }
-      });
-    </script>
+    <script src="js/main.js"></script>
   </body>
 </html>

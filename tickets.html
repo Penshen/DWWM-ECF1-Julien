@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="img/favicon.png" />
+    <link rel="stylesheet" href="css/stylesheet.min.css" />
+    <title>Réservations - Le Port de La Teste en Musique</title>
+  </head>
+  <body>
+    <!-- Desktop Header -->
+    <header>
+      <div class="banner">
+        <div class="content">
+          <div class="circle">
+            <div class="note">♪</div>
+          </div>
+          <div class="text">
+            <h1>LA TESTE</h1>
+          </div>
+          <div class="circle">
+            <div class="note">♬</div>
+          </div>
+        </div>
+        <p class="subtitle">ELECTRONIQUE MUSIQUE FESTIVAL</p>
+      </div>
+      <div class="equalizer desktop-equalizer">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+      </div>
+    </header>
+
+    <!-- Mobile Header -->
+    <header class="mobile-header">
+      <div class="banner">
+        <div class="content">
+          <div class="circle">
+            <div class="note">♪</div>
+          </div>
+          <div class="text">
+            <h1>LA TESTE</h1>
+          </div>
+          <div class="circle">
+            <div class="note">♬</div>
+          </div>
+        </div>
+        <p class="subtitle">ELECTRONIQUE MUSIQUE FESTIVAL</p>
+        <button class="menu-toggle">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+      <div class="equalizer">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+      </div>
+      <div class="menu-overlay">
+        <button class="close-menu">
+          <span></span>
+          <span></span>
+        </button>
+        <nav class="mobile-nav">
+          <a href="index.html">Accueil</a>
+          <a href="program.html">Programme</a>
+          <a href="tickets.html" class="active">Réservations</a>
+          <a href="#">Infos & Accès</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Navigation -->
+    <br />
+    <div class="container-nav">
+      <nav class="header-nav">
+        <a href="index.html">Accueil</a>
+        <a href="program.html">Programme</a>
+        <a href="tickets.html" class="active">Réservations</a>
+        <a href="#">Infos & Accès</a>
+      </nav>
+    </div>
+    <br />
+
+    <!-- Barre de recherche avec bouton de filtrage -->
+    <div class="search-container">
+      <div class="search-bar">
+        <input
+          type="text"
+          id="search-input"
+          placeholder="Rechercher un artiste..."
+        />
+        <button class="search-button">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </button>
+      </div>
+      <button class="filter-button" id="hide-sold-out">
+        <span class="filter-icon">🎫</span>
+        Masquer les SOLD OUT
+      </button>
+      <button class="filter-button" id="sort-price">
+        <span class="filter-icon">💰</span>
+        Prix: Croissant
+      </button>
+      <button class="reset-button" id="reset-filters">
+        <span class="filter-icon">🔄</span>
+        Reset
+      </button>
+    </div>
+
+    <!-- Background Image -->
+    <img
+      src="img/illu-secondaire.jpg"
+      alt="Illustration secondaire en arrière plan en Opacité réduite"
+      class="illu-secondaire"
+    />
+
+    <!-- Main Content -->
+    <div class="cards-container"></div>
+
+    <!-- Footer -->
+    <footer>
+      <nav class="footer-nav">
+        <a href="index.html">Accueil</a>
+        <a href="program.html">Programme</a>
+        <a href="#">Réservations</a>
+        <a href="#">Infos & Accès</a>
+      </nav>
+      <p class="footer-copyright">
+        &copy; 2024 Le Port de La Teste en Musique - Tous droits réservés
+      </p>
+      <button
+        class="scroll-top"
+        onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
+      >
+        ↑
+      </button>
+    </footer>
+    <script src="js/main.js" type="module"></script>
+  </body>
+</html>
