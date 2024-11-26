@@ -101,13 +101,12 @@
       </nav>
     </div>
     <br />
-    <main>
-      <img
-        src="img/illu-secondaire.jpg"
-        alt="Illustration secondaire en arrière plan en Opacité réduite"
-        class="illu-secondaire"
-      />
-
+    <img
+      src="img/illu-secondaire.jpg"
+      alt="Illustration secondaire en arrière plan en Opacité réduite"
+      class="illu-secondaire"
+    />
+    <main class="main-desktop">
       <!-- Desktop Images Layout -->
       <div class="desktop-images-grid">
         <div class="column left-column">
@@ -122,6 +121,7 @@
           <img
             src="img/festival-techno-la-teste.jpg"
             alt="Affiche du Festival de La Teste"
+            class="main-img"
           />
         </div>
         <div class="column right-column">
@@ -137,44 +137,47 @@
         <img src="img/impe.jpg" alt="Artiste : Impératrice" class="images" />
         <img src="img/kavinsky.jpeg" alt="Artiste : Kavinsky" class="images" />
       </div>
+    </main>
 
+    <main class="main-mobile">
+      <img
+        src="img/festival-techno-la-teste.jpg"
+        alt="Affiche du Festival de La Teste"
+        class="main-mobile__center-img"
+      />
       <!-- Mobile Carousel -->
-
-      <!--  <div class="mobile-carousel">
-          <button class="carousel-btn prev">❮</button>
-          <div class="carousel-container">
-            <div class="carousel-track">
-              <img
-                src="img/bonobo.jpg"
-                alt="Artiste : Bonobo"
-                class="carousel-img"
-              />
-              <img
-                src="img/wax-tailor.jpg"
-                alt="Artiste : Wax Tailor"
-                class="carousel-img"
-              />
-              <img src="img/m83.jpg" alt="Artiste : M83" class="carousel-img" />
-              <img
-                src="img/chinese.jpg"
-                alt="Artiste : Chinese Man"
-                class="carousel-img"
-              />
-              <img
-                src="img/impe.jpg"
-                alt="Artiste : Impératrice"
-                class="carousel-img"
-              />
-              <img
-                src="img/kavinsky.jpeg"
-                alt="Artiste : Kavinsky"
-                class="carousel-img"
-              />
-            </div>
-          </div>
-          <button class="carousel-btn next">❯</button>
+      <div class="mobile-carousel">
+        <button class="carousel-btn prev">←</button>
+        <div class="carousel-track">
+          <img
+            src="img/bonobo.jpg"
+            alt="Artiste : Bonobo"
+            class="carousel-img"
+          />
+          <img
+            src="img/wax-tailor.jpg"
+            alt="Artiste : Wax Tailor"
+            class="carousel-img"
+          />
+          <img src="img/m83.jpg" alt="Artiste : M83" class="carousel-img" />
+          <img
+            src="img/chinese.jpg"
+            alt="Artiste : Chinese Man"
+            class="carousel-img"
+          />
+          <img
+            src="img/impe.jpg"
+            alt="Artiste : Impératrice"
+            class="carousel-img"
+          />
+          <img
+            src="img/kavinsky.jpeg"
+            alt="Artiste : Kavinsky"
+            class="carousel-img"
+          />
         </div>
-      </div> -->
+        <button class="carousel-btn next">→</button>
+      </div>
     </main>
     <br />
     <br />
@@ -220,37 +223,26 @@
       });
 
       const track = document.querySelector(".carousel-track");
-      const slides = Array.from(track.children);
-      const nextButton = document.querySelector(".carousel-btn.next");
-      const prevButton = document.querySelector(".carousel-btn.prev");
+      const prevBtn = document.querySelector(".carousel-btn.prev");
+      const nextBtn = document.querySelector(".carousel-btn.next");
       let currentIndex = 0;
+      const slideWidth = 320; // largeur de l'image + gap
 
-      // Calculer la largeur des slides
-      const slideWidth = slides[0].getBoundingClientRect().width;
+      function updateCarousel() {
+        track.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
+      }
 
-      // Positionner les slides côte à côte
-      slides.forEach((slide, index) => {
-        slide.style.left = slideWidth * index + "px";
-      });
-
-      // Fonction pour déplacer le carrousel
-      const moveToSlide = (currentSlide, targetIndex) => {
-        const targetSlide = slides[targetIndex];
-        const amountToMove = targetSlide.style.left;
-        track.style.transform = "translateX(-" + amountToMove + ")";
-        currentIndex = targetIndex;
-      };
-
-      // Event listeners pour les boutons
-      nextButton.addEventListener("click", () => {
-        if (currentIndex < slides.length - 1) {
-          moveToSlide(slides[currentIndex], currentIndex + 1);
+      prevBtn.addEventListener("click", () => {
+        if (currentIndex > 0) {
+          currentIndex--;
+          updateCarousel();
         }
       });
 
-      prevButton.addEventListener("click", () => {
-        if (currentIndex > 0) {
-          moveToSlide(slides[currentIndex], currentIndex - 1);
+      nextBtn.addEventListener("click", () => {
+        if (currentIndex < track.children.length - 1) {
+          currentIndex++;
+          updateCarousel();
         }
       });
     </script>

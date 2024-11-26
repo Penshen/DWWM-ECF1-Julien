@@ -47,7 +47,7 @@ header {
   position: relative;
   z-index: 2;
 
-  @media (max-width: 1024px) {
+  @media (max-width: 768px) {
     display: none;
   }
 
@@ -167,12 +167,64 @@ header {
   flex-direction: column;
 }
 
+.main-mobile__center-img {
+  width: 100%;
+  height: auto;
+}
+
 .mobile-carousel {
   display: none;
   width: 100%;
+  position: relative;
+  margin: 2rem auto;
+  max-width: 800px;
 
   @media (max-width: 1024px) {
+    display: block;
+  }
+
+  .carousel-track {
     display: flex;
+    position: relative;
+    transition: transform 0.3s ease-in-out;
+    gap: 20px;
+  }
+
+  .carousel-img {
+    width: 300px;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    border: 2px solid #83feff;
+    border-radius: 10px;
+  }
+
+  .carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(46, 42, 57, 0.8);
+    color: #83feff;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.5rem;
+    z-index: 2;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: rgba(253, 85, 183, 0.8);
+      color: #e8ffff;
+    }
+
+    &.prev {
+      left: 10px;
+    }
+
+    &.next {
+      right: 10px;
+    }
   }
 }
 
@@ -309,7 +361,7 @@ main {
   padding: 15px 0;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 
-  @media (max-width: 1024px) {
+  @media (max-width: 768px) {
     display: none;
   }
 }
@@ -392,7 +444,7 @@ main {
 .mobile-header {
   display: none;
 
-  @media (max-width: 1024px) {
+  @media (max-width: 768px) {
     display: block;
     position: relative;
     z-index: 2;
@@ -637,13 +689,18 @@ main {
 
 .desktop-images-grid {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   gap: 2rem;
   padding: 2rem;
   margin: 0 auto;
+  width: 100%;
+  max-width: 1400px;
+  box-sizing: border-box;
+  overflow-x: hidden;
 
   @media (max-width: 1024px) {
-    display: none;
+    gap: 1rem;
+    padding: 1rem;
   }
 
   .column {
@@ -651,30 +708,78 @@ main {
     flex-direction: column;
     gap: 5rem;
   }
-  .left-column {
-    margin-left: 5rem;
-    gap: 15rem;
+
+  .left-column,
+  .right-column {
+    width: 250px;
+    flex-shrink: 0;
+
+    @media (max-width: 1024px) {
+      width: 200px;
+    }
+
+    .images {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+
+      @media (max-width: 1024px) {
+        height: 200px;
+      }
+    }
   }
 
   .center-column {
-    display: flex;
-    align-items: center;
-  }
-  .right-column {
-    margin-right: 5rem;
-    gap: 15rem;
+    width: 40%;
+    max-width: 500px;
+    margin: 0 1rem;
+
+    .main-img {
+      width: 100%;
+      height: auto;
+      min-width: unset;
+    }
   }
 }
+
+.images {
+  border: 2px solid #83feff;
+  border-radius: 10px;
+}
+
 .bottom-line {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 15rem;
+  gap: 8rem;
+  margin: 2rem auto;
+  width: 100%;
+  max-width: 1400px;
+  padding: 0 2rem;
+  box-sizing: border-box;
+
   @media (max-width: 1024px) {
+    gap: 4rem;
+    padding: 1rem;
+  }
+
+  @media (max-width: 768px) {
     display: none;
   }
 }
-.images {
-  border: 2px solid #83feff;
-  border-radius: 10px;
+
+.main-desktop {
+  display: block;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+.main-mobile {
+  display: none;
+
+  @media (max-width: 768px) {
+    display: block;
+  }
 }
