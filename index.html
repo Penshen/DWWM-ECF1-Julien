@@ -9,14 +9,18 @@
   </head>
   <body>
     <header>
-      <a href="index.html">
-        <img src="img/favicon.png" alt="Icône du festival" />
-      </a>
-      <img
-        src="img/festival-techno-la-teste-banniere.jpg"
-        alt="bannière du festival de musique de la Teste"
-      />
-      <div class="container">
+      <div class="banner">
+        <div class="content">
+          <div class="circle">
+            <div class="note">♪</div>
+          </div>
+          <div class="text">
+            <h1>LA TESTE</h1>
+          </div>
+          <div class="circle">
+            <div class="note">♬</div>
+          </div>
+        </div>
         <div class="equalizer">
           <div class="bar"></div>
           <div class="bar"></div>
@@ -33,39 +37,70 @@
           <div class="bar"></div>
           <div class="bar"></div>
           <div class="bar"></div>
-          <div class="bar"></div>
-          <div class="bar"></div>
-          <div class="bar"></div>
         </div>
-
-        <div class="reverse-equalizer">
-          <div class="bar"></div>
-          <div class="bar"></div>
-          <div class="bar"></div>
-          <div class="bar"></div>
-          <div class="bar"></div>
-          <div class="bar"></div>
-          <div class="bar"></div>
-          <div class="bar"></div>
-          <div class="bar"></div>
-          <div class="bar"></div>
-          <div class="bar"></div>
-          <div class="bar"></div>
-          <div class="bar"></div>
-          <div class="bar"></div>
-          <div class="bar"></div>
-          <div class="bar"></div>
-          <div class="bar"></div>
-          <div class="bar"></div>
-        </div>
+        <p class="subtitle">ELECTRONIQUE MUSIQUE FESTIVAL</p>
       </div>
     </header>
-    <nav>
-      <a href="#">Accueil</a>
-      <a href="#">Programme</a>
-      <a href="#">Réservations</a>
-      <a href="#">Infos & Accès</a>
-    </nav>
+    <header class="mobile-header">
+      <div class="banner">
+        <div class="content">
+          <div class="circle">
+            <div class="note">♪</div>
+          </div>
+          <div class="text">
+            <h1>LA TESTE</h1>
+          </div>
+          <div class="circle">
+            <div class="note">♬</div>
+          </div>
+        </div>
+        <p class="subtitle">ELECTRONIQUE MUSIQUE FESTIVAL</p>
+        <button class="menu-toggle">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+      <div class="equalizer">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+      </div>
+      <div class="menu-overlay">
+        <button class="close-menu">
+          <span></span>
+          <span></span>
+        </button>
+        <nav class="mobile-nav">
+          <a href="#" class="active">Accueil</a>
+          <a href="#">Programme</a>
+          <a href="#">Réservations</a>
+          <a href="#">Infos & Accès</a>
+        </nav>
+      </div>
+    </header>
+    <br />
+    <div class="container-nav">
+      <nav class="header-nav">
+        <a href="#" class="active">Accueil</a>
+        <a href="#">Programme</a>
+        <a href="#">Réservations</a>
+        <a href="#">Infos & Accès</a>
+      </nav>
+    </div>
+    <br />
     <main>
       <img
         src="img/illu-secondaire.jpg"
@@ -73,13 +108,87 @@
         class="illu-secondaire"
       />
       <div class="container-main__img">
+        <div class="container__side-img--left">
+          <img
+            src="img/bonobo.jpg"
+            alt="Artiste : Bonobo"
+            class="side-img__left"
+          />
+          <img
+            src="img/wax-tailor.jpg"
+            alt="Artiste : Wax Tailor"
+            class="side-img__left"
+          />
+        </div>
         <img
           src="img/festival-techno-la-teste.jpg"
           alt="Logo du festival"
           class="main-img"
         />
+        <div class="container__side-img--right">
+          <img src="img/m83.jpg" alt="Artiste : M83" class="side-img__right" />
+          <img
+            src="img/chinese.jpg"
+            alt="Artiste : Chinese Man"
+            class="side-img__right"
+          />
+        </div>
+      </div>
+      <div class="container__bottom-img">
+        <img
+          src="img/impe.jpg"
+          alt="Artiste : Impératrice"
+          class="bottom-img"
+        />
+        <img
+          src="img/kavinsky.jpeg"
+          alt="Artiste : Kavinsky"
+          class="bottom-img"
+        />
       </div>
     </main>
-    <footer></footer>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <footer>
+      <nav class="footer-nav">
+        <a href="#">Accueil</a>
+        <a href="#">Programme</a>
+        <a href="#">Réservations</a>
+        <a href="#">Infos & Accès</a>
+      </nav>
+      <p class="footer-copyright">
+        &copy; 2024 Le Port de La Teste en Musique - Tous droits réservés
+      </p>
+      <button
+        class="scroll-top"
+        onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
+      >
+        ↑
+      </button>
+    </footer>
+    <script>
+      document
+        .querySelector(".menu-toggle")
+        .addEventListener("click", function () {
+          this.classList.toggle("active");
+          document.querySelector(".menu-overlay").classList.toggle("active");
+        });
+
+      document.querySelectorAll(".mobile-nav a").forEach((link) => {
+        link.addEventListener("click", () => {
+          document.querySelector(".menu-toggle").classList.remove("active");
+          document.querySelector(".menu-overlay").classList.remove("active");
+        });
+      });
+
+      document.querySelector(".close-menu").addEventListener("click", () => {
+        document.querySelector(".menu-toggle").classList.remove("active");
+        document.querySelector(".menu-overlay").classList.remove("active");
+      });
+    </script>
   </body>
 </html>
