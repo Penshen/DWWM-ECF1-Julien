@@ -8,106 +8,23 @@
     <title>Réservations - Le Port de La Teste en Musique</title>
   </head>
   <body>
-    <!-- Desktop Header -->
     <header>
-      <div class="banner">
-        <div class="content">
-          <div class="circle">
-            <div class="note">♪</div>
-          </div>
-          <div class="text">
-            <h1>LA TESTE</h1>
-          </div>
-          <div class="circle">
-            <div class="note">♬</div>
-          </div>
-        </div>
-        <p class="subtitle">ELECTRONIQUE MUSIQUE FESTIVAL</p>
-      </div>
-      <div class="equalizer desktop-equalizer">
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-      </div>
+      <img
+        src="img/festival-techno-la-teste-banniere.jpg"
+        alt="Bannière du festival"
+        class="banner-img"
+      />
     </header>
 
-    <!-- Mobile Header -->
-    <header class="mobile-header">
-      <div class="banner">
-        <div class="content">
-          <div class="circle">
-            <div class="note">♪</div>
-          </div>
-          <div class="text">
-            <h1>LA TESTE</h1>
-          </div>
-          <div class="circle">
-            <div class="note">♬</div>
-          </div>
-        </div>
-        <p class="subtitle">ELECTRONIQUE MUSIQUE FESTIVAL</p>
-        <button class="menu-toggle">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
+    <nav class="main-nav">
+      <div class="nav-container">
+        <a href="index.html" class="nav-link">Accueil</a>
+        <a href="program.html" class="nav-link">Programme</a>
+        <a href="tickets.html" class="nav-link active">Billetterie</a>
+        <a href="info.html" class="nav-link">Infos Pratiques</a>
       </div>
-      <div class="equalizer">
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-      </div>
-      <div class="menu-overlay">
-        <button class="close-menu">
-          <span></span>
-          <span></span>
-        </button>
-        <nav class="mobile-nav">
-          <a href="index.html">Accueil</a>
-          <a href="program.html">Programme</a>
-          <a href="tickets.html" class="active">Réservations</a>
-          <a href="#">Infos & Accès</a>
-        </nav>
-      </div>
-    </header>
+    </nav>
 
-    <!-- Navigation -->
-    <br />
-    <div class="container-nav">
-      <nav class="header-nav">
-        <a href="index.html">Accueil</a>
-        <a href="program.html">Programme</a>
-        <a href="tickets.html" class="active">Réservations</a>
-        <a href="#">Infos & Accès</a>
-      </nav>
-    </div>
-    <br />
-
-    <!-- Barre de recherche avec bouton de filtrage -->
     <div class="search-container">
       <div class="search-bar">
         <input
@@ -140,29 +57,33 @@
         <span class="filter-icon">💰</span>
         Prix: Croissant
       </button>
+      <button class="filter-button date-filter" id="date-filter">
+        <span class="filter-icon">📅</span>
+        Dates
+      </button>
+      <div class="date-dropdown" id="date-dropdown">
+        <!-- Les options seront générées dynamiquement -->
+      </div>
       <button class="reset-button" id="reset-filters">
         <span class="filter-icon">🔄</span>
         Reset
       </button>
     </div>
 
-    <!-- Background Image -->
     <img
       src="img/illu-secondaire.jpg"
-      alt="Illustration secondaire en arrière plan en Opacité réduite"
+      alt="Illustration secondaire"
       class="illu-secondaire"
     />
 
-    <!-- Main Content -->
     <div class="cards-container"></div>
 
-    <!-- Footer -->
     <footer>
       <nav class="footer-nav">
         <a href="index.html">Accueil</a>
         <a href="program.html">Programme</a>
-        <a href="#">Réservations</a>
-        <a href="#">Infos & Accès</a>
+        <a href="tickets.html">Réservations</a>
+        <a href="info.html">Infos & Accès</a>
       </nav>
       <p class="footer-copyright">
         &copy; 2024 Le Port de La Teste en Musique - Tous droits réservés
