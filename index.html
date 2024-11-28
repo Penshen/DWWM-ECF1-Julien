@@ -9,25 +9,37 @@
   </head>
   <body>
     <header>
-      <button class="burger-menu">
+      <!-- Navigation burger menu for mobile -->
+      <button
+        class="burger-menu"
+        aria-label="Menu de navigation"
+        aria-expanded="false"
+      >
         <span></span>
         <span></span>
         <span></span>
       </button>
+      <!-- Banner image -->
       <img
         src="img/festival-techno-la-teste-banniere.jpg"
         alt="Bannière du festival"
         class="banner-img"
       />
     </header>
-    <div class="nav-and-equalizer">
-      <nav class="desktop-nav">
+    <div class="nav-and-equalizer" role="navigation">
+      <!-- Desktop navigation menu -->
+      <nav class="desktop-nav" aria-label="Navigation principale">
         <a href="index.html" class="active">Accueil</a>
         <a href="program.html">Programme</a>
         <a href="tickets.html">Billetterie</a>
         <a href="info.html">Infos Pratiques</a>
       </nav>
-      <div class="equalizer-container">
+      <!-- Music player with equalizer visualization -->
+      <div
+        class="equalizer-container"
+        role="region"
+        aria-label="Lecteur de musique"
+      >
         <button class="equalizer-toggle" aria-label="Toggle music">
           <span class="play-icon">▶</span>
           <span class="pause-icon">⏸</span>
@@ -65,7 +77,13 @@
         </audio>
       </div>
     </div>
-    <div class="menu-overlay">
+    <!-- Mobile menu overlay -->
+    <div
+      class="menu-overlay"
+      role="dialog"
+      aria-modal="true"
+      aria-hidden="true"
+    >
       <nav class="mobile-nav">
         <button class="close-menu">×</button>
         <a href="index.html" class="active">Accueil</a>
@@ -74,7 +92,7 @@
         <a href="info.html">Infos Pratiques</a>
       </nav>
     </div>
-    <main class="home-container">
+    <main class="home-container" role="main">
       <section class="hero-section">
         <h1 class="hero-title">FESTIVAL ÉLECTRONIQUE</h1>
         <p class="hero-dates">Du 15 au 17 Août 2024</p>

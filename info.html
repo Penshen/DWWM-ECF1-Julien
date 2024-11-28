@@ -1,5 +1,7 @@
+<!-- Document setup -->
 <!DOCTYPE html>
 <html lang="fr">
+  <!-- Head section: meta tags, title, and resource links -->
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,32 +9,51 @@
     <link rel="stylesheet" href="css/stylesheet.min.css" />
     <title>Infos & Accès - Le Port de La Teste en Musique</title>
   </head>
+
   <body>
+    <!-- Header section with mobile menu button and banner -->
     <header>
-      <button class="burger-menu">
+      <!-- Mobile menu burger button -->
+      <button
+        class="burger-menu"
+        aria-label="Menu de navigation"
+        aria-expanded="false"
+      >
         <span></span>
         <span></span>
         <span></span>
       </button>
+
+      <!-- Festival banner image -->
       <img
         src="img/festival-techno-la-teste-banniere.jpg"
         alt="Bannière du festival"
         class="banner-img"
       />
     </header>
+
+    <!-- Navigation and music player container -->
     <div class="nav-and-equalizer">
+      <!-- Desktop navigation links -->
       <nav class="desktop-nav">
         <a href="index.html">Accueil</a>
         <a href="program.html">Programme</a>
         <a href="tickets.html">Billetterie</a>
         <a href="info.html" class="active">Infos Pratiques</a>
       </nav>
+
+      <!-- Music player with equalizer visualization -->
       <div class="equalizer-container">
+        <!-- Play/Pause toggle button -->
         <button class="equalizer-toggle" aria-label="Toggle music">
           <span class="play-icon">▶</span>
           <span class="pause-icon">⏸</span>
         </button>
+
+        <!-- Equalizer animation bars -->
         <div class="equalizer">
+          <!-- 25 span elements for equalizer bars -->
+          <span></span>
           <span></span>
           <span></span>
           <span></span>
@@ -58,15 +79,21 @@
           <span></span>
           <span></span>
         </div>
+
+        <!-- Background music audio element -->
         <audio id="background-music" loop>
-          <source src="mp3/loop.mp3" type="audio/mpeg">
+          <source src="mp3/loop.mp3" type="audio/mpeg" />
           Your browser does not support the audio element.
         </audio>
       </div>
     </div>
+
+    <!-- Mobile navigation overlay menu -->
     <div class="menu-overlay">
       <nav class="mobile-nav">
+        <!-- Close button for mobile menu -->
         <button class="close-menu">×</button>
+        <!-- Mobile navigation links -->
         <a href="index.html">Accueil</a>
         <a href="program.html">Programme</a>
         <a href="tickets.html">Billetterie</a>
@@ -74,13 +101,21 @@
       </nav>
     </div>
 
-    <div class="container">
+    <!-- Main content container -->
+    <div class="container" role="main">
+      <!-- Restauration information section -->
       <div class="toggle-section">
-        <button class="toggle-button">
+        <button
+          class="toggle-button"
+          aria-expanded="false"
+          aria-controls="restauration-content"
+        >
           Restauration
-          <span class="toggle-icon">+</span>
+          <span class="toggle-icon" aria-hidden="true">+</span>
         </button>
-        <div class="toggle-content">
+        <!-- Expandable content for food and beverages -->
+        <div id="restauration-content" class="toggle-content" hidden>
+          <!-- Food and beverage details -->
           <p>
             <strong
               >Restauration sur place : Une expérience culinaire à ne pas
@@ -111,12 +146,19 @@
         </div>
       </div>
 
+      <!-- Access and directions section -->
       <div class="toggle-section">
-        <button class="toggle-button">
+        <button
+          class="toggle-button"
+          aria-expanded="false"
+          aria-controls="access-content"
+        >
           Plan d'accès
-          <span class="toggle-icon">+</span>
+          <span class="toggle-icon" aria-hidden="true">+</span>
         </button>
-        <div class="toggle-content">
+        <!-- Expandable content for access information -->
+        <div id="access-content" class="toggle-content" hidden>
+          <!-- Access details and map -->
           <p>
             <strong>Comment nous rejoindre ?</strong>
             <br /><br />
@@ -127,6 +169,7 @@
             <strong>En bus :</strong> Ligne 1 - Arrêt "Port de La Teste"
             <br /><br />
           </p>
+          <!-- Google Maps embed container -->
           <div class="map-container">
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2837.441979069!2d-1.1498847234771685!3d44.6397844!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd5499111d7fb9bf%3A0x912d00939e04d5e0!2sPort%20de%20La%20Teste!5e0!3m2!1sfr!2sfr!4v1710347622599!5m2!1sfr!2sfr"
@@ -142,59 +185,115 @@
         </div>
       </div>
 
+      <!-- Contact information section -->
       <div class="toggle-section">
-        <button class="toggle-button">
+        <button
+          class="toggle-button"
+          aria-expanded="false"
+          aria-controls="contact-content"
+        >
           Contact
-          <span class="toggle-icon">+</span>
+          <span class="toggle-icon" aria-hidden="true">+</span>
         </button>
-        <div class="toggle-content">
+        <!-- Expandable content for contact information -->
+        <div id="contact-content" class="toggle-content" hidden>
+          <!-- Contact details paragraph -->
           <p>
             <strong>Besoin d'informations ?</strong>
             <br /><br />
-            N'hésitez pas à nous contacter pour toute question concernant le festival.
+            N'hésitez pas à nous contacter pour toute question concernant le
+            festival.
             <br /><br />
             <strong>Par email :</strong>
-            <a href="mailto:contact@lateste-festival.fr" class="contact-link">contact@lateste-festival.fr</a>
+            <a href="mailto:contact@lateste-festival.fr" class="contact-link"
+              >contact@lateste-festival.fr</a
+            >
             <br /><br />
             <strong>Par téléphone :</strong>
             <a href="tel:+33556001122" class="contact-link">05 56 00 11 22</a>
             <br /><br />
             <strong>Sur les réseaux sociaux :</strong>
-            <div class="social-links">
-              <a href="#" class="social-link" target="_blank" rel="noopener noreferrer">
-                <img src="img/facebook.svg" alt="Facebook" class="social-icon" />
-                Facebook
-              </a>
-              <a href="#" class="social-link" target="_blank" rel="noopener noreferrer">
-                <img src="img/insta.svg" alt="Instagram" class="social-icon" />
-                Instagram
-              </a>
-              <a href="#" class="social-link" target="_blank" rel="noopener noreferrer">
-                <img src="img/twitterx.svg" alt="Twitter" class="social-icon" />
-                Twitter
-              </a>
-            </div>
-            <br /><br />
-            <em class="response-message">Notre équipe vous répondra dans les plus brefs délais !</em>
           </p>
+
+          <!-- Social media links navigation -->
+          <div
+            class="social-links"
+            role="navigation"
+            aria-label="Réseaux sociaux"
+          >
+            <!-- Individual social media links -->
+            <a
+              href="#"
+              class="social-link"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Suivez-nous sur Facebook"
+            >
+              <img
+                src="img/facebook.svg"
+                alt=""
+                aria-hidden="true"
+                class="social-icon"
+              />
+              Facebook
+            </a>
+
+            <!-- Instagram link -->
+            <a
+              href="#"
+              class="social-link"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img src="img/insta.svg" alt="Instagram" class="social-icon" />
+              Instagram
+            </a>
+
+            <!-- Twitter link -->
+            <a
+              href="#"
+              class="social-link"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img src="img/twitterx.svg" alt="Twitter" class="social-icon" />
+              Twitter
+            </a>
+          </div>
+          <br /><br />
+          <!-- Response time message -->
+          <em class="response-message"
+            >Notre équipe vous répondra dans les plus brefs délais !</em
+          >
         </div>
       </div>
     </div>
 
+    <!-- Footer section -->
     <footer>
+      <!-- Footer navigation links -->
       <nav class="footer-nav">
         <a href="index.html">Accueil</a>
         <a href="program.html">Programme</a>
         <a href="tickets.html">Réservations</a>
         <a href="info.html">Infos & Accès</a>
       </nav>
+
+      <!-- Copyright notice -->
       <p class="footer-copyright">
         &copy; 2024 Le Port de La Teste en Musique - Tous droits réservés
       </p>
-      <button class="scroll-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+
+      <!-- Scroll to top button -->
+      <button
+        class="scroll-top"
+        onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
+      >
         ↑
       </button>
     </footer>
+
+    <!-- JavaScript imports -->
     <script src="js/main.js" type="module"></script>
   </body>
 </html>

@@ -1,5 +1,7 @@
+<!-- Document setup -->
 <!DOCTYPE html>
 <html lang="fr">
+  <!-- Head section: meta tags, title, and resource links -->
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,32 +9,50 @@
     <link rel="stylesheet" href="css/stylesheet.min.css" />
     <title>Programme - Le Port de La Teste en Musique</title>
   </head>
+
   <body>
+    <!-- Header section with mobile menu button and banner -->
     <header>
-      <button class="burger-menu">
+      <!-- Mobile menu burger button -->
+      <button
+        class="burger-menu"
+        aria-label="Menu de navigation"
+        aria-expanded="false"
+      >
         <span></span>
         <span></span>
         <span></span>
       </button>
+
+      <!-- Festival banner image -->
       <img
         src="img/festival-techno-la-teste-banniere.jpg"
         alt="Bannière du festival"
         class="banner-img"
       />
     </header>
-    <div class="nav-and-equalizer">
+
+    <!-- Navigation and music player container -->
+    <div class="nav-and-equalizer" role="navigation">
+      <!-- Desktop navigation links -->
       <nav class="desktop-nav">
         <a href="index.html">Accueil</a>
         <a href="program.html" class="active">Programme</a>
         <a href="tickets.html">Billetterie</a>
         <a href="info.html">Infos Pratiques</a>
       </nav>
+
+      <!-- Music player with equalizer visualization -->
       <div class="equalizer-container">
+        <!-- Play/Pause toggle button -->
         <button class="equalizer-toggle" aria-label="Toggle music">
           <span class="play-icon">▶</span>
           <span class="pause-icon">⏸</span>
         </button>
+
+        <!-- Equalizer animation bars -->
         <div class="equalizer">
+          <!-- 25 span elements for equalizer bars -->
           <span></span>
           <span></span>
           <span></span>
@@ -59,15 +79,21 @@
           <span></span>
           <span></span>
         </div>
+
+        <!-- Background music audio element -->
         <audio id="background-music" loop>
           <source src="mp3/loop.mp3" type="audio/mpeg" />
           Your browser does not support the audio element.
         </audio>
       </div>
     </div>
+
+    <!-- Mobile navigation overlay menu -->
     <div class="menu-overlay">
       <nav class="mobile-nav">
+        <!-- Close button for mobile menu -->
         <button class="close-menu">×</button>
+        <!-- Mobile navigation links -->
         <a href="index.html">Accueil</a>
         <a href="program.html" class="active">Programme</a>
         <a href="tickets.html">Billetterie</a>
@@ -75,28 +101,41 @@
       </nav>
     </div>
 
+    <!-- Secondary illustration -->
     <img
       src="img/illu-secondaire.jpg"
       alt="Illustration secondaire"
       class="illu-secondaire"
     />
 
-    <div class="program-container">
+    <!-- Main program content container -->
+    <div class="program-container" role="main">
       <div class="program-content">
-        <div class="program-days"></div>
+        <!-- Program days tabs container - Populated by JavaScript -->
+        <div
+          class="program-days"
+          role="tablist"
+          aria-label="Programme par jour"
+        ></div>
       </div>
     </div>
 
+    <!-- Footer section -->
     <footer>
+      <!-- Footer navigation links -->
       <nav class="footer-nav">
         <a href="index.html">Accueil</a>
         <a href="program.html">Programme</a>
         <a href="tickets.html">Réservations</a>
         <a href="info.html">Infos & Accès</a>
       </nav>
+
+      <!-- Copyright notice -->
       <p class="footer-copyright">
         &copy; 2024 Le Port de La Teste en Musique - Tous droits réservés
       </p>
+
+      <!-- Scroll to top button -->
       <button
         class="scroll-top"
         onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
@@ -104,6 +143,8 @@
         ↑
       </button>
     </footer>
+
+    <!-- JavaScript imports -->
     <script src="js/main.js" type="module"></script>
   </body>
 </html>

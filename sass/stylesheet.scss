@@ -1,21 +1,4 @@
-// At the top of the file, add breakpoint variables
-$breakpoints: (
-  "small": 425px,
-  "medium": 768px,
-  "large": 1024px,
-);
-
-// Add a mixin for media queries
-@mixin respond-to($breakpoint) {
-  @if map-has-key($breakpoints, $breakpoint) {
-    @media (max-width: map-get($breakpoints, $breakpoint)) {
-      @content;
-    }
-  } @else {
-    @warn "No breakpoint found for `#{$breakpoint}`. Available breakpoints are: #{map-keys($breakpoints)}";
-  }
-}
-
+/* Reset and Variables */
 * {
   margin: 0;
   padding: 0;
@@ -28,12 +11,22 @@ $breakpoints: (
   --text-light: #e8ffff;
   --accent-color: #83feff;
   --accent-color-2: #fd55b7;
+}
 
-  @include respond-to("large") {
+/* Breakpoints */
+$desktop: 1024px;
+$tablet: 768px;
+$mobile: 425px;
+
+/* Base Media Queries */
+@media (max-width: $desktop) {
+  :root {
     --header-height: auto;
     --nav-height: 0;
   }
 }
+
+/* Base Styles */
 body {
   width: 100%;
   overflow-x: hidden;
@@ -57,6 +50,8 @@ body {
   z-index: -1;
   pointer-events: none;
 }
+
+/* Header Styles */
 header {
   display: flex;
   justify-content: center;
@@ -95,7 +90,7 @@ header {
     width: 800px;
   }
 
-  @include respond-to("medium") {
+  @media (max-width: $tablet) {
     padding: 15px;
 
     .burger-menu {
@@ -108,6 +103,8 @@ header {
     }
   }
 }
+
+/* Animation Keyframes */
 @keyframes equalizerBounce {
   0% {
     transform: scaleY(0.3);
@@ -149,112 +146,201 @@ header {
     transform: scaleY(0.3);
   }
 }
+
+/* Footer Styles */
 footer {
   width: 100%;
   display: flex;
   justify-content: space-around;
   align-items: center;
-  background-color: #e8ffff;
-  padding: 1rem 2rem;
+  background: rgba(46, 42, 57, 0.95);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 1.5rem 2rem;
   position: relative;
   z-index: 2;
   margin-top: auto;
   flex-shrink: 0;
+  border-top: 2px solid var(--accent-color);
+  box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.2);
 
-  @include respond-to("large") {
-    padding: 0.8rem 1.5rem;
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      45deg,
+      rgba(131, 254, 255, 0.1),
+      rgba(253, 85, 183, 0.1)
+    );
+    pointer-events: none;
   }
 
-  @include respond-to("medium") {
-    padding: 0.5rem 1rem;
+  @media (max-width: $desktop) {
+    padding: 1.2rem 1.5rem;
+  }
+
+  @media (max-width: $tablet) {
+    padding: 1rem;
+    justify-content: space-between;
+    gap: 1rem;
   }
 }
+
+/* Navigation Styles */
 .footer-nav {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 1.5rem;
   margin-left: 50px;
 
-  @include respond-to("large") {
+  @media (max-width: $desktop) {
+    margin-left: 30px;
+  }
+
+  @media (max-width: $tablet) {
     display: none;
   }
 
   a {
-    color: #fd55b7;
+    color: var(--accent-color);
     text-decoration: none;
     position: relative;
     text-align: center;
-    padding: 0.2rem 0;
+    padding: 0.4rem 0;
     font-size: 1rem;
+    transition: all 0.3s ease;
 
-    @include respond-to("large") {
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(
+        to right,
+        var(--accent-color),
+        var(--accent-color-2)
+      );
+      transition: all 0.3s ease;
+      transform: translateX(-50%);
+    }
+
+    &:hover {
+      color: var(--accent-color-2);
+
+      &::after {
+        width: 80%;
+      }
+    }
+
+    @media (max-width: $desktop) {
       font-size: 0.9rem;
     }
 
-    @include respond-to("medium") {
-      font-size: 0.8rem;
+    @media (max-width: $tablet) {
+      font-size: 0.85rem;
     }
   }
 }
-.footer-copyright {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  color: #2e2a39;
-  font-size: 1rem;
 
-  @include respond-to("large") {
-    position: relative;
-    left: auto;
-    transform: none;
-    text-align: center;
-    font-size: 0.9rem;
+/* Copyright Styles */
+.footer-copyright {
+  color: var(--text-light);
+  font-size: 0.9rem;
+  text-align: center;
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+
+  &:hover {
+    opacity: 1;
   }
 
-  @include respond-to("medium") {
+  @media (max-width: $desktop) {
+    font-size: 0.85rem;
+  }
+
+  @media (max-width: $tablet) {
+    width: auto;
+    order: 1;
     font-size: 0.8rem;
   }
 }
+
+/* Scroll Top Button */
 .scroll-top {
-  margin-left: auto;
   margin-right: 50px;
-  background-color: #fd55b7;
-  color: #e8ffff;
+  background: linear-gradient(
+    45deg,
+    var(--accent-color),
+    var(--accent-color-2)
+  );
+  color: var(--primary-color);
   border: none;
   border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  font-size: 3rem;
+  width: 45px;
+  height: 45px;
+  font-size: 1.8rem;
   cursor: pointer;
   transition: all 0.3s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-.scroll-top:hover {
-  background-color: #15acff;
-  transform: translateY(-3px);
-}
-.scroll-top:active {
-  transform: translateY(0);
-}
-@media (max-width: 1024px) {
-  .scroll-top {
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(131, 254, 255, 0.3);
+  }
+
+  &:active {
+    transform: translateY(-1px);
+  }
+
+  @media (max-width: $desktop) {
+    margin-right: 30px;
     width: 40px;
     height: 40px;
-    font-size: 2.5rem;
-    margin-right: 30px;
+    font-size: 1.5rem;
   }
-}
-@media (max-width: 768px) {
-  .scroll-top {
+
+  @media (max-width: $tablet) {
+    margin-right: 0;
     width: 35px;
     height: 35px;
-    font-size: 2rem;
-    margin-right: 20px;
+    font-size: 1.3rem;
+    order: 2;
   }
 }
+
+/* Responsive Utilities */
+@media (max-width: $desktop) {
+  .container {
+    max-width: 90%;
+  }
+
+  .search-container {
+    gap: 15px;
+  }
+}
+
+@media (max-width: $tablet) {
+  .container {
+    max-width: 100%;
+    padding: 0 15px;
+  }
+
+  .search-container {
+    gap: 10px;
+  }
+}
+
+/* Layout Components */
 main,
 .container,
 .program-container,
@@ -265,6 +351,7 @@ main,
   margin: 0 50px;
 }
 
+/* Search Components */
 .search-container {
   display: flex;
   gap: 20px;
@@ -303,14 +390,8 @@ main,
       background: rgba(253, 85, 183, 0.3);
       border-color: var(--accent-color-2);
     }
-  }
 
-  @include respond-to("large") {
-    gap: 10px;
-    padding: 0 15px;
-
-    .filter-button,
-    .reset-button {
+    @media (max-width: $desktop) {
       width: 40px;
       height: 40px;
       padding: 0;
@@ -325,131 +406,144 @@ main,
         font-size: 1.4em;
       }
     }
-  }
 
-  @include respond-to("medium") {
-    gap: 8px;
-    padding: 0 10px;
-
-    .filter-button,
-    .reset-button {
+    @media (max-width: $tablet) {
       width: 35px;
       height: 35px;
 
       .filter-icon {
         font-size: 1.2em;
       }
+
+      &.reset-button {
+        width: 100%;
+        justify-content: center;
+      }
     }
+  }
 
-    .search-bar {
-      flex: 1;
-      min-width: 0;
-    }
-  }
-}
-
-.search-bar {
-  position: relative;
-  width: 100%;
-  max-width: 600px;
-  display: flex;
-  align-items: center;
-  flex: 1;
-}
-.search-bar input {
-  width: 100%;
-  padding: 12px 50px 12px 20px;
-  border: 2px solid #83feff;
-  border-radius: 25px;
-  background: rgba(59, 54, 72, 0.8);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  color: #e8ffff;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  font-family: "Poppins", sans-serif;
-}
-.search-bar input::placeholder {
-  color: rgba(131, 254, 255, 0.6);
-}
-.search-bar input:focus {
-  outline: none;
-  border-color: #fd55b7;
-  box-shadow: 0 0 15px rgba(253, 85, 183, 0.3);
-}
-.search-bar .search-button {
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 8px;
-  color: #83feff;
-  transition: all 0.3s ease;
-}
-.search-bar .search-button:hover {
-  color: #fd55b7;
-  transform: translateY(-50%) scale(1.1);
-}
-.search-bar .search-button svg {
-  width: 20px;
-  height: 20px;
-}
-@keyframes pulse {
-  0% {
-    transform: rotate(5deg) scale(1);
-  }
-  50% {
-    transform: rotate(5deg) scale(1.05);
-  }
-  100% {
-    transform: rotate(5deg) scale(1);
-  }
-}
-.reset-button {
-  height: 45px;
-  padding: 0 20px;
-  background-color: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 2px solid #83feff;
-  border-radius: 25px;
-  color: #e8ffff;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  white-space: nowrap;
-
-  @include respond-to("medium") {
+  .search-bar {
+    position: relative;
     width: 100%;
-    justify-content: center;
+    max-width: 600px;
+    display: flex;
+    align-items: center;
+    flex: 1;
+
+    input {
+      /* Input field base styling */
+      padding: 12px 50px 12px 20px;
+      border: 2px solid #83feff;
+      border-radius: 25px;
+      background: rgba(59, 54, 72, 0.8);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      color: #e8ffff;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      font-family: "Poppins", sans-serif;
+
+      /* Input placeholder styling */
+      &::placeholder {
+        color: rgba(131, 254, 255, 0.6);
+      }
+
+      /* Input focus state */
+      &:focus {
+        outline: none;
+        border-color: #fd55b7;
+        box-shadow: 0 0 15px rgba(253, 85, 183, 0.3);
+      }
+    }
+
+    /* Search button positioning and base styles */
+    .search-button {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+      color: #83feff;
+      transition: all 0.3s ease;
+
+      /* Search button hover effects */
+      &:hover {
+        color: #fd55b7;
+        transform: translateY(-50%) scale(1.1);
+      }
+
+      /* Search icon dimensions */
+      svg {
+        width: 20px;
+        height: 20px;
+      }
+    }
   }
-}
-.reset-button:hover {
-  background-color: rgba(253, 85, 183, 0.2);
-  border-color: #fd55b7;
-}
-.reset-button .filter-icon {
-  font-size: 1.2em;
-  transition: transform 0.3s ease;
-}
-.reset-button.active {
-  background-color: rgba(253, 85, 183, 0.3);
-  border-color: #fd55b7;
-}
-@media (max-width: 768px) {
+
+  /* Pulse animation keyframes for interactive elements */
+  @keyframes pulse {
+    0% {
+      transform: rotate(5deg) scale(1);
+    }
+    50% {
+      transform: rotate(5deg) scale(1.05);
+    }
+    100% {
+      transform: rotate(5deg) scale(1);
+    }
+  }
+
+  /* Reset button base styling */
   .reset-button {
-    width: 100%;
-    justify-content: center;
+    height: 45px;
+    padding: 0 20px;
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 2px solid #83feff;
+    border-radius: 25px;
+    color: #e8ffff;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+
+    /* Reset button hover state */
+    &:hover {
+      background-color: rgba(253, 85, 183, 0.2);
+      border-color: #fd55b7;
+    }
+
+    /* Reset button icon styling */
+    .filter-icon {
+      font-size: 1.2em;
+      transition: transform 0.3s ease;
+    }
+
+    /* Reset button active state */
+    &.active {
+      background-color: rgba(253, 85, 183, 0.3);
+      border-color: #fd55b7;
+    }
+
+    /* Reset button responsive adjustments */
+    @media (max-width: $tablet) {
+      width: 100%;
+      justify-content: center;
+    }
   }
 }
+
+/* Card Components - Base Styles */
 .card,
 .card-reverse {
+  /* Base card layout and styling */
   background: rgba(59, 54, 72, 0.95);
   border: 2px solid #83feff;
   border-radius: 15px;
@@ -461,20 +555,23 @@ main,
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;
   overflow: hidden;
+  /* Card positioning and size */
   margin-bottom: 20px;
   margin-left: 0;
   margin-right: auto;
   max-width: 70%;
   z-index: 1;
 
+  /* Hover animation effect */
   &:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     border-color: var(--accent-color-2);
   }
 
+  /* Image section styling */
   .card-image {
-    flex: 0 0 200px;
+    flex: 0 0 200px; // Fixed width, no grow/shrink
     height: 200px;
     border-radius: 10px;
     overflow: hidden;
@@ -487,17 +584,19 @@ main,
       transition: transform 0.3s ease;
 
       &:hover {
-        transform: scale(1.05);
+        transform: scale(1.05); // Zoom effect on hover
       }
     }
   }
 
+  /* Content section styling */
   .card-content {
-    flex: 1;
+    flex: 1; // Takes remaining space
     display: flex;
     flex-direction: column;
     gap: 15px;
 
+    /* Band name styling */
     .band-name {
       font-size: 1.5rem;
       font-weight: 700;
@@ -505,6 +604,7 @@ main,
       margin-bottom: 8px;
     }
 
+    /* Date and time container */
     .datetime-container {
       display: flex;
       align-items: center;
@@ -522,13 +622,7 @@ main,
       }
     }
 
-    .description {
-      line-height: 1.6;
-      margin: 12px 0;
-      color: var(--text-light);
-      font-size: 1rem;
-    }
-
+    /* Progress bar for ticket availability */
     .progress-container {
       background: rgba(255, 255, 255, 0.1);
       border-radius: 10px;
@@ -536,19 +630,10 @@ main,
       position: relative;
       margin: 10px 0;
 
-      .progress-bar {
-        height: 100%;
-        border-radius: 10px;
-        background: linear-gradient(
-          90deg,
-          var(--accent-color),
-          var(--accent-color-2)
-        );
-        transition: width 0.3s ease;
-      }
+      /* Sold out state styling */
       &[data-sold-out="true"] {
         .progress-bar {
-          background: linear-gradient(90deg, #ff4444, #ff0000);
+          background: linear-gradient(90deg, #f44, red);
           box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
         }
 
@@ -557,16 +642,9 @@ main,
           font-weight: 600;
         }
       }
-
-      .tickets-text {
-        position: absolute;
-        top: -25px;
-        right: 0;
-        font-size: 0.9rem;
-        color: var(--accent-color);
-      }
     }
 
+    /* Reservation section with button and price */
     .reservation {
       display: flex;
       align-items: center;
@@ -586,58 +664,24 @@ main,
         font-weight: 600;
         cursor: pointer;
         transition: all 0.3s ease;
-
-        &:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 5px 15px rgba(131, 254, 255, 0.3);
-        }
-      }
-
-      .price {
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: var(--accent-color);
       }
     }
   }
 
-  @include respond-to("large") {
+  /* Responsive breakpoints */
+  @media (max-width: $desktop) {
     max-width: 90%;
     margin: 0 auto 20px;
-
-    .card-image {
-      flex: 0 0 150px;
-      height: 150px;
-    }
+    // ... desktop adjustments
   }
 
-  @include respond-to("small") {
+  @media (max-width: $mobile) {
     max-width: 100%;
-    padding: 15px;
     flex-direction: column;
-
-    .card-image {
-      flex: none;
-      width: 100%;
-      height: 200px;
-    }
-
-    .card-content {
-      .band-name {
-        font-size: 1.3rem;
-      }
-
-      .reservation {
-        flex-direction: column;
-        gap: 15px;
-
-        .reserve-button {
-          width: 100%;
-        }
-      }
-    }
+    // ... mobile adjustments
   }
 
+  /* Sold out state styling */
   &[data-sold-out="true"] {
     .card-image,
     .card-content {
@@ -649,22 +693,25 @@ main,
       cursor: not-allowed;
       background: #666;
       pointer-events: none;
-
-      &:hover {
-        transform: none;
-        box-shadow: none;
-      }
     }
   }
 }
 
+/* Reverse card variation */
 .card-reverse {
   flex-direction: row-reverse;
   border-color: #fd55b7;
   margin-left: auto;
   margin-right: 0;
+
+  @media (max-width: $mobile) {
+    flex-direction: column;
+    margin: 0 auto 20px;
+  }
 }
 
+/* Badge Components */
+/* Base styles shared between sold-out and last-tickets badges */
 .sold-out-badge,
 .last-tickets-badge {
   position: absolute;
@@ -677,160 +724,200 @@ main,
   z-index: 1;
 }
 
+/* Specific styles for the sold-out badge */
 .sold-out-badge {
+  /* Center the badge in the middle of its container */
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+
+  /* Larger size for emphasis */
   padding: 20px 40px;
   border-radius: 20px;
   font-weight: 800;
   font-size: 2rem;
   z-index: 2;
+
+  /* Visual styling with semi-transparent red background */
   background: rgba(255, 0, 0, 0.2);
   color: #ff4444;
   border: 3px solid #ff4444;
+
+  /* Add pulsing animation and visual effects */
   animation: soldOutPulse 2s ease-in-out infinite;
   text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
   backdrop-filter: blur(5px);
 
-  @include respond-to("medium") {
+  /* Responsive adjustments for tablet and below */
+  @media (max-width: $tablet) {
     font-size: 1.5rem;
     padding: 15px 30px;
   }
 }
 
+/* Specific styles for the last-tickets badge */
 .last-tickets-badge {
-  background: rgba(255, 193, 7, 0.2);
+  background: rgba(255, 193, 7, 0.2); /* Semi-transparent yellow */
   color: #ffc107;
   border: 2px solid #ffc107;
 }
 
+/* Filter Components */
+/* Date filter button styling */
 .date-filter {
   position: relative;
-  z-index: 9999;
+  z-index: 9999; /* Ensure dropdown appears above other elements */
+
+  /* Active state styling */
+  &.active {
+    background: rgba(253, 85, 183, 0.3);
+    border-color: #fd55b7;
+  }
 }
-.date-filter.active {
-  background: rgba(253, 85, 183, 0.3);
-  border-color: #fd55b7;
-}
+
+/* Dropdown menu styling */
 .date-dropdown {
+  /* Positioning relative to the filter button */
   position: absolute;
   top: calc(100% + 10px);
   right: 0;
+
+  /* Visual styling with blur effect */
   background: rgba(59, 54, 72, 0.95);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border: 2px solid var(--accent-color);
   border-radius: 15px;
   padding: 20px;
+
+  /* Size constraints */
   min-width: 250px;
+
+  /* Hidden by default */
   opacity: 0;
   visibility: hidden;
   transform: translateY(-10px);
+
+  /* Smooth transition for showing/hiding */
   transition: all 0.3s ease;
   z-index: 9999;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-
-  &.active {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-    display: block;
-  }
-
-  .dropdown-title {
-    color: var(--accent-color);
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin-bottom: 15px;
-  }
-
-  .date-option {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px;
-    color: var(--text-light);
-    cursor: pointer;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    position: relative;
-
-    input[type="radio"] {
-      position: absolute;
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-
-    .radio-custom {
-      width: 18px;
-      height: 18px;
-      border: 2px solid var(--accent-color);
-      border-radius: 50%;
-      position: relative;
-      display: inline-block;
-      transition: all 0.3s ease;
-
-      &::after {
-        content: "";
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%) scale(0);
-        width: 10px;
-        height: 10px;
-        background: var(--accent-color-2);
-        border-radius: 50%;
-        transition: all 0.3s ease;
-      }
-    }
-
-    &:hover {
-      background: rgba(253, 85, 183, 0.2);
-    }
-
-    &.selected,
-    input[type="radio"]:checked + .radio-custom {
-      border-color: var(--accent-color-2);
-
-      &::after {
-        transform: translate(-50%, -50%) scale(1);
-      }
-    }
-
-    label {
-      flex: 1;
-      cursor: pointer;
-    }
-  }
-
-  .apply-button {
-    width: 100%;
-    padding: 12px;
-    margin-top: 15px;
-    background: linear-gradient(
-      90deg,
-      var(--accent-color),
-      var(--accent-color-2)
-    );
-    border: none;
-    border-radius: 25px;
-    color: var(--primary-color);
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-
-    &:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(131, 254, 255, 0.3);
-    }
-  }
 }
 
-@media (max-width: 768px) {
+/* Active state for dropdown */
+.date-dropdown.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  display: block;
+}
+
+/* Dropdown title styling */
+.date-dropdown .dropdown-title {
+  color: var(--accent-color);
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+/* Individual date option styling */
+.date-dropdown .date-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  color: var(--text-light);
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+/* Hide default radio button */
+.date-dropdown .date-option input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Custom radio button styling */
+.date-dropdown .date-option .radio-custom {
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--accent-color);
+  border-radius: 50%;
+  position: relative;
+  display: inline-block;
+  transition: all 0.3s ease;
+}
+
+/* Radio button indicator dot */
+.date-dropdown .date-option .radio-custom::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  width: 10px;
+  height: 10px;
+  background: var(--accent-color-2);
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+/* Hover state for options */
+.date-dropdown .date-option:hover {
+  background: rgba(253, 85, 183, 0.2);
+}
+
+/* Selected/checked state styling */
+.date-dropdown .date-option.selected,
+.date-dropdown .date-option input[type="radio"]:checked + .radio-custom {
+  border-color: var(--accent-color-2);
+}
+
+/* Show indicator dot when selected/checked */
+.date-dropdown .date-option.selected::after,
+.date-dropdown .date-option input[type="radio"]:checked + .radio-custom::after {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* Option label styling */
+.date-dropdown .date-option label {
+  flex: 1;
+  cursor: pointer;
+}
+
+/* Apply button styling */
+.date-dropdown .apply-button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 15px;
+  background: linear-gradient(
+    90deg,
+    var(--accent-color),
+    var(--accent-color-2)
+  );
+  border: none;
+  border-radius: 25px;
+  color: var(--primary-color);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Apply button hover effect */
+.date-dropdown .apply-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(131, 254, 255, 0.3);
+}
+
+/* Responsive adjustments for desktop and below */
+@media (max-width: $desktop) {
   .date-dropdown {
+    /* Center dropdown in viewport on mobile */
     position: fixed;
     top: 50%;
     left: 50%;
@@ -838,149 +925,201 @@ main,
     width: 90%;
     max-width: 300px;
     margin: 0 auto;
+  }
 
-    &.active {
-      transform: translate(-50%, -50%);
-    }
+  /* Maintain centered position when active */
+  .date-dropdown.active {
+    transform: translate(-50%, -50%);
   }
 }
+
+/* Program Section - Main container for program content */
 .program-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
   position: relative;
   z-index: 1;
+}
 
-  h3 {
-    color: var(--accent-color);
-    font-size: 1.8rem;
-    margin: 2rem 0 1rem;
-    text-align: center;
-    background: linear-gradient(
-      to right,
-      var(--accent-color),
-      var(--accent-color-2)
-    );
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    padding: 1rem 2rem;
-    position: relative;
+/* Program Section Headers - Gradient text effect with background */
+.program-container h3 {
+  /* Base text styling */
+  font-size: 1.8rem;
+  margin: 2rem 0 1rem;
+  text-align: center;
+  padding: 1rem 2rem;
+  position: relative;
 
-    // Add background and border
-    &::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(46, 42, 57, 0.8);
-      border: 2px solid var(--accent-color);
-      border-radius: 10px;
-      z-index: -1;
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-    }
+  /* Gradient text effect */
+  background: linear-gradient(
+    to right,
+    var(--accent-color),
+    var(--accent-color-2)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
 
-    @include respond-to("medium") {
-      font-size: 1.4rem;
-      margin: 1.5rem 0 0.8rem;
-      padding: 0.8rem 1.5rem;
-    }
+/* Background decoration for headers */
+.program-container h3::before {
+  content: "";
+  position: absolute;
+  inset: 0; /* Shorthand for top/right/bottom/left: 0 */
+  background: rgba(46, 42, 57, 0.8);
+  border: 2px solid var(--accent-color);
+  border-radius: 10px;
+  z-index: -1;
+  /* Glass effect */
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
 
-    @include respond-to("small") {
-      font-size: 1.2rem;
-      margin: 1rem 0 0.6rem;
-      padding: 0.6rem 1rem;
-    }
+/* Responsive adjustments for tablets */
+@media (max-width: $tablet) {
+  .program-container h3 {
+    font-size: 1.4rem;
+    margin: 1.5rem 0 0.8rem;
+    padding: 0.8rem 1.5rem;
   }
 }
+
+/* Responsive adjustments for mobile */
+@media (max-width: $mobile) {
+  .program-container h3 {
+    font-size: 1.2rem;
+    margin: 1rem 0 0.6rem;
+    padding: 0.6rem 1rem;
+  }
+}
+
+/* Program content wrapper */
 .program-content {
   position: relative;
   z-index: 2;
 }
+
+/* Adjust background image z-index when program container exists */
 body:has(.program-container) .illu-secondaire {
   z-index: -1;
 }
+
+/* Toggle Components - Collapsible sections */
 .toggle-section {
   margin: 20px 0;
   position: relative;
   z-index: 2;
 }
+
+/* Toggle button styling */
 .toggle-button {
   width: 100%;
   padding: 15px 20px;
+  /* Semi-transparent background with glass effect */
   background: rgba(59, 54, 72, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  /* Border and shape */
   border: 2px solid #83feff;
   border-radius: 10px;
+
+  /* Text and layout */
   text-align: left;
   font-size: 1.2em;
   font-weight: bold;
-  cursor: pointer;
+  color: #e8ffff;
+
+  /* Flex layout for button content */
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: #e8ffff;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+
+  cursor: pointer;
   transition: all 0.3s ease;
 }
+
+/* Hover state for toggle button */
 .toggle-button:hover {
   background: rgba(253, 85, 183, 0.2);
   border-color: #fd55b7;
 }
+
+/* Toggle button icon */
 .toggle-button .toggle-icon {
   font-size: 1.4em;
   transition: transform 0.3s ease;
   color: #83feff;
 }
+
+/* Active state styling */
 .toggle-button.active {
   border-radius: 10px 10px 0 0;
   border-color: #fd55b7;
 }
+
+/* Remove top border when button is active */
 .toggle-button.active + .toggle-content {
   border-top: none;
 }
+
+/* Toggle Content - Collapsible section styles */
 .toggle-content {
+  /* Initial collapsed state */
   max-height: 0;
   overflow: hidden;
-  transition: all 0.3s ease-out;
+  opacity: 0;
+  visibility: hidden;
+
+  /* Visual styling */
   background: rgba(59, 54, 72, 0.95);
   border-radius: 0 0 10px 10px;
   padding: 0 20px;
+
+  /* Glass effect */
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  opacity: 0;
-  visibility: hidden;
+
+  /* Smooth transition for expanding/collapsing */
+  transition: all 0.3s ease-out;
 }
+
+/* Paragraph styling within toggle content */
 .toggle-content p {
   color: #e8ffff;
   line-height: 1.8;
   font-size: 1em;
   margin: 0;
   padding: 20px;
+
+  /* Special text emphasis */
+  strong {
+    color: #83feff; /* Accent color for important text */
+    display: inline-block;
+    margin-bottom: 5px;
+  }
+
+  em {
+    color: #fd55b7; /* Secondary accent for emphasized text */
+    font-style: italic;
+    display: block;
+    text-align: center;
+    margin-top: 10px;
+  }
 }
-.toggle-content p strong {
-  color: #83feff;
-  display: inline-block;
-  margin-bottom: 5px;
-}
-.toggle-content p em {
-  color: #fd55b7;
-  font-style: italic;
-  display: block;
-  text-align: center;
-  margin-top: 10px;
-}
+
+/* Active state - when content is expanded */
 .toggle-content.active {
-  max-height: 1500px;
+  max-height: 1500px; /* Large value to accommodate content */
   opacity: 1;
   visibility: visible;
   padding: 0 20px;
   border: 2px solid #fd55b7;
   border-top: none;
 }
+
+/* Map container within toggle content */
 .toggle-content .map-container {
   margin: 20px 0;
   border-radius: 10px;
@@ -990,104 +1129,107 @@ body:has(.program-container) .illu-secondaire {
   iframe {
     width: 100%;
     height: 450px;
+  }
+}
 
-    @include respond-to("medium") {
-      height: 300px;
-    }
-  }
-}
-@media (max-width: 768px) {
+/* Responsive adjustments */
+@media (max-width: $tablet) {
   .toggle-content .map-container iframe {
-    height: 300px;
+    height: 300px; /* Smaller height on tablets */
   }
-}
-@media (max-width: 768px) {
+
+  .toggle-content p {
+    font-size: 0.9em; /* Slightly smaller text */
+  }
+
   .container {
     padding: 15px;
     margin: 0 10px;
   }
-  .toggle-button {
-    font-size: 1.1em;
-    padding: 12px 15px;
-  }
-  .toggle-content p {
-    font-size: 0.9em;
-  }
 }
+
+/* Spacing between toggle sections */
 .toggle-section + .toggle-section {
   margin-top: 20px;
 }
+
+/* Contact and Social Links Styling */
 .contact-link {
   color: #83feff;
   text-decoration: none;
   transition: all 0.3s ease;
   display: inline-block;
   margin: 5px 0;
+
+  &:hover {
+    color: #fd55b7;
+    transform: translateX(5px); /* Slide effect on hover */
+  }
 }
-.contact-link:hover {
-  color: #fd55b7;
-  transform: translateX(5px);
-}
+
+/* Social links container */
 .social-links {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
   margin-top: 10px;
-}
-.social-links .social-link {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  color: #e8ffff;
-  text-decoration: none;
-  padding: 6px 12px;
-  border-radius: 15px;
-  background: rgba(59, 54, 72, 0.8);
-  border: 1px solid #83feff;
-  transition: all 0.3s ease;
-  font-size: 0.9em;
-}
-.social-links .social-link .social-icon {
-  width: 16px;
-  height: 16px;
-  object-fit: contain;
-  transition: filter 0.3s ease;
-}
-.social-links .social-link:hover {
-  background: rgba(253, 85, 183, 0.2);
-  border-color: #fd55b7;
-  transform: translateY(-2px);
-}
-.social-links .social-link:hover .social-icon {
-  filter: invert(55%) sepia(86%) saturate(4990%) hue-rotate(297deg)
-    brightness(99%) contrast(96%);
-}
-@media (max-width: 768px) {
-  .social-links {
-    flex-direction: column;
-    gap: 8px;
-  }
-  .social-links .social-link {
-    width: 100%;
-    justify-content: center;
-    padding: 8px 10px;
+
+  /* Individual social link styling */
+  .social-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #e8ffff;
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: 15px;
+    background: rgba(59, 54, 72, 0.8);
+    border: 1px solid #83feff;
+    transition: all 0.3s ease;
+    font-size: 0.9em;
+
+    /* Social icon styling */
+    .social-icon {
+      width: 16px;
+      height: 16px;
+      object-fit: contain;
+      transition: filter 0.3s ease;
+    }
+
+    /* Hover effects */
+    &:hover {
+      background: rgba(253, 85, 183, 0.2);
+      border-color: #fd55b7;
+      transform: translateY(-2px);
+
+      .social-icon {
+        /* Change icon color on hover */
+        filter: invert(55%) sepia(86%) saturate(4990%) hue-rotate(297deg)
+          brightness(99%) contrast(96%);
+      }
+    }
   }
 }
+
 .response-message {
   color: #fd55b7;
 }
+
 .home-container {
   display: flex;
   position: relative;
   z-index: 2;
+}
 
-  @include respond-to("medium") {
+@media (max-width: $tablet) {
+  .home-container {
     padding: 0;
     min-height: unset;
     margin-top: 1rem;
     margin-bottom: 1rem;
   }
 }
+
 .hero-section {
   text-align: center;
   max-width: 800px;
@@ -1100,100 +1242,111 @@ body:has(.program-container) .illu-secondaire {
   border: 1px solid rgba(131, 254, 255, 0.2);
   position: relative;
   z-index: 2;
+}
 
-  @include respond-to("medium") {
+@media (max-width: $tablet) {
+  .hero-section {
     width: 100%;
     padding: 1.5rem;
     margin: 0;
   }
+}
 
-  .hero-title {
-    font-size: clamp(2rem, 5vw, 4rem);
-    background: linear-gradient(to right, #fd55b7, #83feff);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    margin-bottom: 1rem;
-    line-height: 1.2;
-    font-weight: bold;
-    text-transform: uppercase;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    hyphens: auto;
-    padding: 0 0.5rem;
+.hero-section .hero-title {
+  font-size: clamp(2rem, 5vw, 4rem);
+  background: linear-gradient(to right, #fd55b7, #83feff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+  font-weight: bold;
+  text-transform: uppercase;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  padding: 0 0.5rem;
+}
 
-    @include respond-to("medium") {
-      font-size: clamp(1.2rem, 6vw, 2rem);
-      margin-bottom: 0.5rem;
-      line-height: 1.3;
-    }
-  }
-
-  .hero-dates {
-    color: #83feff;
-    font-size: clamp(1rem, 3vw, 1.5rem);
-    margin-bottom: 2rem;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-
-    @include respond-to("medium") {
-      font-size: clamp(0.9rem, 2.5vw, 1.2rem);
-      margin-bottom: 1.5rem;
-      letter-spacing: 1px;
-    }
-  }
-
-  .hero-cta {
-    display: flex;
-    gap: 1.5rem;
-    justify-content: center;
-    align-items: center;
-
-    @include respond-to("medium") {
-      flex-direction: column;
-      gap: 1rem;
-      width: 100%;
-    }
-
-    .cta-button {
-      padding: 1rem 2rem;
-      border-radius: 25px;
-      text-decoration: none;
-      font-weight: bold;
-      transition: all 0.3s ease;
-
-      @include respond-to("medium") {
-        width: 100%;
-        max-width: 280px;
-        padding: 0.8rem 1.5rem;
-      }
-
-      &:first-child {
-        background: linear-gradient(to right, #fd55b7, #83feff);
-        color: #2e2a39;
-
-        &:hover {
-          background: linear-gradient(to right, #83feff, #fd55b7);
-        }
-      }
-
-      &.secondary {
-        border: 2px solid #83feff;
-        color: #83feff;
-
-        &:hover {
-          border-color: #fd55b7;
-          color: #fd55b7;
-        }
-      }
-
-      &:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-      }
-    }
+@media (max-width: $tablet) {
+  .hero-section .hero-title {
+    font-size: clamp(1.2rem, 6vw, 2rem);
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
   }
 }
+
+.hero-section .hero-dates {
+  color: #83feff;
+  font-size: clamp(1rem, 3vw, 1.5rem);
+  margin-bottom: 2rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+@media (max-width: $tablet) {
+  .hero-section .hero-dates {
+    font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+    margin-bottom: 1.5rem;
+    letter-spacing: 1px;
+  }
+}
+
+.hero-section .hero-cta {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (max-width: $tablet) {
+  .hero-section .hero-cta {
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+  }
+}
+
+.hero-section .hero-cta .cta-button {
+  padding: 1rem 2rem;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+@media (max-width: $tablet) {
+  .hero-section .hero-cta .cta-button {
+    width: 100%;
+    max-width: 280px;
+    padding: 0.8rem 1.5rem;
+  }
+}
+
+.hero-section .hero-cta .cta-button:first-child {
+  background: linear-gradient(to right, #fd55b7, #83feff);
+  color: #2e2a39;
+}
+
+.hero-section .hero-cta .cta-button:first-child:hover {
+  background: linear-gradient(to right, #83feff, #fd55b7);
+}
+
+.hero-section .hero-cta .cta-button.secondary {
+  border: 2px solid #83feff;
+  color: #83feff;
+}
+
+.hero-section .hero-cta .cta-button.secondary:hover {
+  border-color: #fd55b7;
+  color: #fd55b7;
+}
+
+.hero-section .hero-cta .cta-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
 .festival-image {
   width: 100%;
   max-width: 1200px;
@@ -1204,6 +1357,7 @@ body:has(.program-container) .illu-secondaire {
   position: relative;
   z-index: 2;
 }
+
 @keyframes pulse {
   0% {
     box-shadow: 0 0 0 0 rgba(131, 254, 255, 0.4);
@@ -1215,128 +1369,11 @@ body:has(.program-container) .illu-secondaire {
     box-shadow: 0 0 0 0 rgba(131, 254, 255, 0);
   }
 }
+
 .banner-img {
   max-width: 100%;
   height: auto;
   width: 800px;
-}
-.main-nav {
-  background: linear-gradient(to right, #2e2a39, #3b3648);
-  padding: 1rem 0;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-
-  @include respond-to("medium") {
-    display: none;
-  }
-}
-.nav-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-}
-.nav-link {
-  color: var(--accent-color);
-  text-decoration: none;
-  font-weight: 500;
-  padding: 0.5rem 1rem;
-  transition: all 0.3s ease;
-  position: relative;
-}
-.nav-link::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  width: 0;
-  height: 2px;
-  background: linear-gradient(
-    to right,
-    var(--accent-color-2),
-    var(--accent-color)
-  );
-  transition: all 0.3s ease;
-  transform: translateX(-50%);
-}
-.nav-link:hover {
-  color: var(--accent-color-2);
-}
-.nav-link:hover::after {
-  width: 80%;
-}
-.nav-link.active {
-  background: linear-gradient(
-    to right,
-    var(--accent-color-2),
-    var(--accent-color)
-  );
-  color: var(--primary-color);
-  border-radius: 25px;
-}
-.nav-link.active::after {
-  width: 0;
-}
-@media (max-width: 768px) {
-  .main-nav {
-    display: none;
-  }
-}
-
-@media (max-width: 1024px) and (min-width: 769px) {
-  .filter-button,
-  .reset-button {
-    width: 45px;
-    height: 45px;
-    padding: 0;
-    justify-content: center;
-    overflow: hidden;
-
-    span:not(.filter-icon) {
-      display: none;
-    }
-
-    .filter-icon {
-      margin: 0;
-      font-size: 1.4em;
-    }
-  }
-
-  .search-container {
-    gap: 15px;
-  }
-}
-
-.filter-button,
-.reset-button {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 20px;
-  border-radius: 25px;
-  background: rgba(46, 42, 57, 0.8);
-  border: 1px solid var(--accent-color);
-  color: var(--text-light);
-  cursor: pointer;
-  transition: all 0.3s ease;
-
-  @include respond-to("large") {
-    width: 45px;
-    height: 45px;
-    padding: 0;
-    justify-content: center;
-
-    .button-text {
-      display: none;
-    }
-  }
-}
-
-.button-text {
-  display: inline-block;
 }
 
 .program-card {
@@ -1351,55 +1388,56 @@ body:has(.program-container) .illu-secondaire {
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;
   width: 100%;
+}
 
-  .card-image {
-    flex: 0 0 200px;
-    height: 200px;
-    border-radius: 10px;
-    overflow: hidden;
-    border: 2px solid var(--accent-color);
+.program-card .card-image {
+  flex: 0 0 200px;
+  height: 200px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 2px solid var(--accent-color);
+}
 
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.3s ease;
+.program-card .card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
 
-      &:hover {
-        transform: scale(1.05);
-      }
-    }
-  }
+.program-card .card-image img:hover {
+  transform: scale(1.05);
+}
 
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-    border-color: var(--accent-color-2);
-  }
+.program-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  border-color: var(--accent-color-2);
+}
 
-  .card-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-  }
+.program-card .card-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
 
-  @include respond-to("medium") {
+@media (max-width: $tablet) {
+  .program-card {
     flex-direction: column;
     padding: 15px;
+  }
 
-    .card-image {
-      width: 100%;
-      height: 200px;
-    }
+  .program-card .card-image {
+    width: 100%;
+    height: 200px;
+  }
 
-    .card-content {
-      width: 100%;
-    }
+  .program-card .card-content {
+    width: 100%;
   }
 }
 
-// Separate button-info styles
 .button-info {
   padding: 12px 25px;
   background: linear-gradient(
@@ -1415,31 +1453,34 @@ body:has(.program-container) .illu-secondaire {
   transition: all 0.3s ease;
   align-self: flex-start;
   margin-top: 10px;
+}
 
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(131, 254, 255, 0.3);
-  }
+.button-info:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(131, 254, 255, 0.3);
+}
 
-  &:active {
-    transform: translateY(0);
-  }
+.button-info:active {
+  transform: translateY(0);
+}
 
-  @include respond-to("small") {
+@media (max-width: $mobile) {
+  .button-info {
     width: 100%;
     text-align: center;
   }
 }
 
-// Add styles for the day cards container
 .day-cards {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); // Two cards per row
+  grid-template-columns: repeat(2, 1fr);
   gap: 20px;
   width: 100%;
+}
 
-  @include respond-to("medium") {
-    grid-template-columns: 1fr; // One card per row on mobile
+@media (max-width: $tablet) {
+  .day-cards {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -1452,91 +1493,125 @@ body:has(.program-container) .illu-secondaire {
   background: rgba(46, 42, 57, 0.95);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  z-index: 1000;
+  z-index: 5000;
   transition: all 0.3s ease;
   display: flex;
   justify-content: center;
   align-items: center;
-
-  &.active {
-    left: 0;
-  }
-
-  .mobile-nav {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 2rem;
-    padding: 20px;
-    position: relative;
-    transform: translateX(-100%);
-    transition: transform 0.3s ease;
-
-    .close-menu {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background: none;
-      border: none;
-      color: var(--accent-color);
-      font-size: 2rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      z-index: 2;
-
-      &:hover {
-        color: var(--accent-color-2);
-        transform: rotate(90deg);
-      }
-    }
-
-    a {
-      color: var(--text-light);
-      text-decoration: none;
-      padding: 1rem;
-      font-size: 2rem;
-      text-align: center;
-      width: 100%;
-      max-width: 300px;
-      transition: all 0.3s ease;
-      position: relative;
-
-      &::after {
-        content: "";
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        width: 0;
-        height: 2px;
-        background: var(--accent-color);
-        transition: all 0.3s ease;
-        transform: translateX(-50%);
-      }
-
-      &:hover,
-      &.active {
-        color: var(--accent-color);
-        transform: scale(1.1);
-
-        &::after {
-          width: 80%;
-        }
-      }
-
-      &.active {
-        color: var(--accent-color-2);
-      }
-    }
-  }
-
-  &.active .mobile-nav {
-    transform: translateX(0);
-  }
 }
 
+.menu-overlay.active {
+  left: 0;
+}
+
+.menu-overlay .mobile-nav {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  padding: 20px;
+  position: relative;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+}
+
+.menu-overlay .mobile-nav .close-menu {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: var(--accent-color);
+  font-size: 2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 2;
+}
+
+.menu-overlay .mobile-nav .close-menu:hover {
+  color: var(--accent-color-2);
+  transform: rotate(90deg);
+}
+
+.menu-overlay .mobile-nav a {
+  color: var(--text-light);
+  text-decoration: none;
+  padding: 1rem;
+  font-size: 2rem;
+  text-align: center;
+  width: 100%;
+  max-width: 300px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.menu-overlay .mobile-nav a::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--accent-color);
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.menu-overlay .mobile-nav a:hover,
+.menu-overlay .mobile-nav a.active {
+  color: var(--accent-color);
+  transform: scale(1.1);
+}
+
+.menu-overlay .mobile-nav a:hover::after,
+.menu-overlay .mobile-nav a.active::after {
+  width: 80%;
+}
+
+.menu-overlay .mobile-nav a.active {
+  color: var(--accent-color-2);
+}
+
+/* Mobile Navigation Link Underline Animation */
+.menu-overlay .mobile-nav a::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--accent-color);
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+/* Mobile Navigation Hover and Active States */
+.menu-overlay .mobile-nav a:hover,
+.menu-overlay .mobile-nav a.active {
+  color: var(--accent-color);
+  transform: scale(1.1);
+}
+
+/* Show underline on hover and active states */
+.menu-overlay .mobile-nav a:hover::after,
+.menu-overlay .mobile-nav a.active::after {
+  width: 80%;
+}
+
+/* Active link special color */
+.menu-overlay .mobile-nav a.active {
+  color: var(--accent-color-2);
+}
+
+/* Mobile menu slide-in animation */
+.menu-overlay.active .mobile-nav {
+  transform: translateX(0);
+}
+
+/* Prevent body scroll when menu is open */
 body.menu-open {
   overflow: hidden;
   position: fixed;
@@ -1544,6 +1619,7 @@ body.menu-open {
   height: 100%;
 }
 
+/* Navigation and Equalizer Layout Container */
 .nav-and-equalizer {
   display: flex;
   align-items: center;
@@ -1556,6 +1632,7 @@ body.menu-open {
   position: relative;
 }
 
+/* Equalizer Container Styling */
 .equalizer-container {
   width: fit-content;
   display: flex;
@@ -1574,92 +1651,162 @@ body.menu-open {
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2),
     inset 0 0 20px rgba(131, 254, 255, 0.1);
   transform: scale(0.85);
-
-  &::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(
-      45deg,
-      rgba(131, 254, 255, 0.1),
-      rgba(253, 85, 183, 0.1)
-    );
-    border-radius: 13px;
-    pointer-events: none;
-  }
-
-  &::after {
-    content: "";
-    position: absolute;
-    top: -2px;
-    left: -2px;
-    right: -2px;
-    bottom: -2px;
-    border-radius: 15px;
-    background: linear-gradient(
-      45deg,
-      var(--accent-color),
-      var(--accent-color-2)
-    );
-    opacity: 0.3;
-    z-index: -1;
-    animation: pulse 2s ease-in-out infinite;
-  }
 }
 
+/* Gradient overlay for equalizer container */
+.equalizer-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    45deg,
+    rgba(131, 254, 255, 0.1),
+    rgba(253, 85, 183, 0.1)
+  );
+  border-radius: 13px;
+  pointer-events: none;
+}
+
+/* Animated border effect for equalizer container */
+.equalizer-container::after {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border-radius: 15px;
+  background: linear-gradient(
+    45deg,
+    var(--accent-color),
+    var(--accent-color-2)
+  );
+  opacity: 0.3;
+  z-index: -1;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Equalizer Bar Container */
 .equalizer {
   display: flex;
   align-items: flex-end;
   gap: 3px;
   height: 30px;
   order: 2;
-
-  span {
-    width: 4px;
-    background: var(--accent-color);
-    transform-origin: bottom;
-    border-radius: 3px;
-
-    // Bass frequencies (slower, higher amplitude)
-    &:nth-child(4n + 1) {
-      animation: equalizerBounce 0.8s ease-in-out infinite;
-      height: 100%;
-    }
-
-    // Mid frequencies
-    &:nth-child(4n + 2) {
-      animation: equalizerBounce 0.6s ease-in-out infinite;
-      height: 85%;
-    }
-
-    // High-mid frequencies
-    &:nth-child(4n + 3) {
-      animation: equalizerBounce 0.4s ease-in-out infinite;
-      height: 70%;
-    }
-
-    // High frequencies (faster, lower amplitude)
-    &:nth-child(4n) {
-      animation: equalizerBounce 0.2s ease-in-out infinite;
-      height: 55%;
-    }
-
-    // Add slight delays to create a wave effect
-    @for $i from 1 through 24 {
-      &:nth-child(#{$i}) {
-        animation-delay: #{$i * 0.05}s;
-      }
-    }
-  }
-
-  &.paused span {
-    animation-play-state: paused;
-  }
 }
 
+/* Individual Equalizer Bar Styling */
+.equalizer span {
+  width: 4px;
+  background: var(--accent-color);
+  transform-origin: bottom;
+  border-radius: 3px;
+}
+
+/* Different heights and animations for equalizer bars */
+.equalizer span:nth-child(4n + 1) {
+  animation: equalizerBounce 0.8s ease-in-out infinite;
+  height: 100%;
+}
+
+.equalizer span:nth-child(4n + 2) {
+  animation: equalizerBounce 0.6s ease-in-out infinite;
+  height: 85%;
+}
+
+.equalizer span:nth-child(4n + 3) {
+  animation: equalizerBounce 0.4s ease-in-out infinite;
+  height: 70%;
+}
+
+.equalizer span:nth-child(4n) {
+  animation: equalizerBounce 0.2s ease-in-out infinite;
+  height: 55%;
+}
+
+/* Animation delays for each equalizer bar */
+.equalizer span:nth-child(1) {
+  animation-delay: 0.05s;
+}
+.equalizer span:nth-child(2) {
+  animation-delay: 0.1s;
+}
+.equalizer span:nth-child(3) {
+  animation-delay: 0.15s;
+}
+.equalizer span:nth-child(4) {
+  animation-delay: 0.2s;
+}
+.equalizer span:nth-child(5) {
+  animation-delay: 0.25s;
+}
+.equalizer span:nth-child(6) {
+  animation-delay: 0.3s;
+}
+.equalizer span:nth-child(7) {
+  animation-delay: 0.35s;
+}
+.equalizer span:nth-child(8) {
+  animation-delay: 0.4s;
+}
+.equalizer span:nth-child(9) {
+  animation-delay: 0.45s;
+}
+.equalizer span:nth-child(10) {
+  animation-delay: 0.5s;
+}
+.equalizer span:nth-child(11) {
+  animation-delay: 0.55s;
+}
+.equalizer span:nth-child(12) {
+  animation-delay: 0.6s;
+}
+.equalizer span:nth-child(13) {
+  animation-delay: 0.65s;
+}
+.equalizer span:nth-child(14) {
+  animation-delay: 0.7s;
+}
+.equalizer span:nth-child(15) {
+  animation-delay: 0.75s;
+}
+.equalizer span:nth-child(16) {
+  animation-delay: 0.8s;
+}
+.equalizer span:nth-child(17) {
+  animation-delay: 0.85s;
+}
+.equalizer span:nth-child(18) {
+  animation-delay: 0.9s;
+}
+.equalizer span:nth-child(19) {
+  animation-delay: 0.95s;
+}
+.equalizer span:nth-child(20) {
+  animation-delay: 1s;
+}
+.equalizer span:nth-child(21) {
+  animation-delay: 1.05s;
+}
+.equalizer span:nth-child(22) {
+  animation-delay: 1.1s;
+}
+.equalizer span:nth-child(23) {
+  animation-delay: 1.15s;
+}
+.equalizer span:nth-child(24) {
+  animation-delay: 1.2s;
+}
+
+/* Pause state for equalizer */
+.equalizer.paused span {
+  animation-play-state: paused;
+}
+
+/* Play/Pause Button Styling */
 .equalizer-toggle {
   order: 1;
   background: none;
@@ -1675,31 +1822,30 @@ body.menu-open {
   transition: all 0.3s ease;
   font-size: 1em;
   padding: 0;
-
-  &:hover {
-    border-color: var(--accent-color-2);
-    color: var(--accent-color-2);
-    transform: scale(1.1);
-  }
-
-  .play-icon {
-    display: none;
-  }
-
-  .pause-icon {
-    display: block;
-  }
-
-  &.paused {
-    .play-icon {
-      display: block;
-    }
-    .pause-icon {
-      display: none;
-    }
-  }
 }
 
+/* Play/Pause Button States */
+.equalizer-toggle:hover {
+  border-color: var(--accent-color-2);
+  color: var(--accent-color-2);
+  transform: scale(1.1);
+}
+
+/* Play/Pause Icon Display Logic */
+.equalizer-toggle .play-icon {
+  display: none;
+}
+.equalizer-toggle .pause-icon {
+  display: block;
+}
+.equalizer-toggle.paused .play-icon {
+  display: block;
+}
+.equalizer-toggle.paused .pause-icon {
+  display: none;
+}
+
+/* Animation Keyframes */
 @keyframes equalizerBounce {
   0% {
     transform: scaleY(0.3);
@@ -1748,11 +1894,14 @@ body.menu-open {
   }
 }
 
+/* Desktop Navigation */
 .desktop-nav {
-  display: none; // Hidden by default for mobile
+  display: none; /* Hidden by default, shown on desktop */
+}
 
-  @media (min-width: 1024px) {
-    // Direct media query for large screens
+/* Desktop-specific styles */
+@media (min-width: 1024px) {
+  .desktop-nav {
     display: flex;
     justify-content: center;
     gap: 15px;
@@ -1767,83 +1916,78 @@ body.menu-open {
     width: fit-content;
     margin: 20px auto;
     position: relative;
-
-    &::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(
-        45deg,
-        rgba(131, 254, 255, 0.1),
-        rgba(253, 85, 183, 0.1)
-      );
-      border-radius: 48px;
-      pointer-events: none;
-    }
-
-    a {
-      color: var(--text-light);
-      text-decoration: none;
-      font-size: 1.1rem;
-      padding: 8px 20px;
-      border-radius: 25px;
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-
-      &::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(
-          45deg,
-          var(--accent-color),
-          var(--accent-color-2)
-        );
-        opacity: 0;
-        transition: opacity 0.3s ease;
-        border-radius: 25px;
-        z-index: -1;
-      }
-
-      &:hover {
-        color: var(--primary-color);
-        &::before {
-          opacity: 1;
-        }
-      }
-
-      &.active {
-        background: linear-gradient(
-          45deg,
-          var(--accent-color),
-          var(--accent-color-2)
-        );
-        color: var(--primary-color);
-      }
-    }
+  }
+  .desktop-nav::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      45deg,
+      rgba(131, 254, 255, 0.1),
+      rgba(253, 85, 183, 0.1)
+    );
+    border-radius: 48px;
+    pointer-events: none;
+  }
+  .desktop-nav a {
+    color: var(--text-light);
+    text-decoration: none;
+    font-size: 1.1rem;
+    padding: 8px 20px;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .desktop-nav a::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      45deg,
+      var(--accent-color),
+      var(--accent-color-2)
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: 25px;
+    z-index: -1;
+  }
+  .desktop-nav a:hover {
+    color: var(--primary-color);
+  }
+  .desktop-nav a:hover::before {
+    opacity: 1;
+  }
+  .desktop-nav a.active {
+    background: linear-gradient(
+      45deg,
+      var(--accent-color),
+      var(--accent-color-2)
+    );
+    color: var(--primary-color);
   }
 }
 
+/* Mobile-specific adjustments */
 @media (max-width: 768px) {
   .equalizer-container {
     position: relative;
     right: auto;
     transform: scale(0.8);
   }
-
   .nav-and-equalizer {
     flex-direction: column;
   }
 }
 
-// Add these new keyframes for the pulsing effect
+/* Sold Out Animation */
 @keyframes soldOutPulse {
   0% {
     transform: scale(1);
@@ -1856,5 +2000,58 @@ body.menu-open {
   100% {
     transform: scale(1);
     opacity: 0.8;
+  }
+}
+
+/* Progress bar styling */
+.progress-container {
+  .progress-bar {
+    height: 100%;
+    border-radius: 10px;
+    background: linear-gradient(
+      90deg,
+      var(--accent-color),
+      var(--accent-color-2)
+    );
+    transition: width 0.3s ease;
+    position: relative;
+    overflow: hidden;
+
+    /* Animated shine effect */
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+      );
+      animation: shine 2s infinite;
+    }
+  }
+
+  /* Tickets remaining text */
+  .tickets-text {
+    position: absolute;
+    top: -20px;
+    right: 0;
+    font-size: 0.9rem;
+    color: var(--text-light);
+    opacity: 0.8;
+  }
+}
+
+/* Shine animation for progress bar */
+@keyframes shine {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
   }
 }

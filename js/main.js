@@ -1,21 +1,18 @@
+// Initialize audio functionality when DOM is fully loaded
 document.addEventListener("DOMContentLoaded", () => {
   const audio = document.getElementById("background-music");
   const equalizer = document.querySelector(".equalizer");
   const equalizerToggle = document.querySelector(".equalizer-toggle");
 
   if (audio && equalizer && equalizerToggle) {
-    // Get saved audio time and state from localStorage
+    // Restore previous audio session state
     const savedTime = parseFloat(localStorage.getItem("audioTime") || "0");
-    const wasPlaying =
-      localStorage.getItem("audioPlaying") === "false" ? false : true;
-
-    // Set the audio time to the saved position
     audio.currentTime = savedTime;
 
-    // Function to toggle play/pause state
+    // Handle play/pause toggling and update UI accordingly
     const togglePlayPause = () => {
       if (audio.paused) {
-        // Try to play
+        // Attempt to play audio and update UI state
         audio
           .play()
           .then(() => {
@@ -62,21 +59,21 @@ document.addEventListener("DOMContentLoaded", () => {
       localStorage.setItem("audioPlaying", "true");
     });
 
-    // Save current time periodically
+    // Persist audio playback position every second while playing
     setInterval(() => {
       if (!audio.paused) {
         localStorage.setItem("audioTime", audio.currentTime.toString());
       }
     }, 1000);
 
-    // Handle page visibility change
+    // Save audio position when user leaves/minimizes page
     document.addEventListener("visibilitychange", () => {
       if (document.hidden) {
         localStorage.setItem("audioTime", audio.currentTime.toString());
       }
     });
 
-    // Always try to play on page load
+    // Attempt autoplay when page loads (may be blocked by browser)
     audio
       .play()
       .then(() => {
@@ -92,7 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   }
 
-  // Fonction utilitaire pour formater les dates
+  // Helper function to format dates in French locale
   function formatDate(dateString) {
     const date = new Date(dateString);
     return date.toLocaleDateString("fr-FR", {
@@ -103,19 +100,19 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Vérifier d'abord quelle page nous sommes
+  // Determine current page for conditional feature loading
   const isProgramPage = window.location.pathname.includes("program.html");
   const isInfoPage = window.location.pathname.includes("info.html");
   const isTicketsPage = window.location.pathname.includes("tickets.html");
 
-  // Ajout du code pour le menu burger au début du fichier
+  // Mobile menu functionality
   const menuToggle = document.querySelector(".burger-menu");
   const menuOverlay = document.querySelector(".menu-overlay");
   const closeMenu = document.querySelector(".close-menu");
   const body = document.body;
 
   if (menuToggle && menuOverlay && closeMenu) {
-    // Function to toggle menu state
+    // Toggle mobile menu visibility and body scroll
     const toggleMenu = (show) => {
       menuOverlay.classList.toggle("active", show);
       body.classList.toggle("menu-open", show);
@@ -154,7 +151,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Gestion de la page programme
+  // Program page specific functionality
   if (isProgramPage) {
     const programDays = document.querySelector(".program-days");
 
@@ -263,10 +260,10 @@ document.addEventListener("DOMContentLoaded", () => {
         console.error("Erreur:", error);
         programDays.innerHTML = `<p style="color: white;">Erreur lors du chargement des données: ${error.message}</p>`;
       });
-    return; // Sortir de la fonction si c'est la page programme
+    return;
   }
 
-  // Gestion de la page info
+  // Info page specific functionality
   if (isInfoPage) {
     // Toggle functionality for info page
     const toggleButtons = document.querySelectorAll(".toggle-button");
@@ -286,7 +283,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  // Gestion de la page tickets
+  // Tickets page specific functionality
   if (isTicketsPage) {
     const searchInput = document.getElementById("search-input");
     const hideButton = document.getElementById("hide-sold-out");
@@ -299,7 +296,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentPriceSort = "asc";
     let selectedDate = "all";
 
-    // Fonction pour créer les cartes
+    // Function to create ticket cards
     function createTicketCard(artistData, isReverse = false) {
       const card = document.createElement("div");
       card.className = isReverse ? "card-reverse" : "card";
@@ -335,14 +332,14 @@ document.addEventListener("DOMContentLoaded", () => {
       bandName.className = "band-name";
       bandName.textContent = artistData.artist.toUpperCase();
 
-      // Ajouter la date et l'heure
+      // Add date and time
       const dateTimeContainer = document.createElement("div");
       dateTimeContainer.className = "datetime-container";
 
       const dateTime = document.createElement("p");
       dateTime.className = "datetime";
 
-      // Formater la date
+      // Format date
       const date = new Date(artistData.date);
       const formattedDate = date.toLocaleDateString("fr-FR", {
         day: "numeric",
@@ -379,7 +376,7 @@ document.addEventListener("DOMContentLoaded", () => {
         : `${remainingTickets} places restantes`;
 
       progressContainer.setAttribute("data-sold-out", isSoldOut);
-      progressContainer.title = `${artistData.ticketsSold}/1000 tickets vendus`;
+      progressContainer.title = `${artistData.ticketsSold}/1000 tickets sold`;
 
       progressContainer.appendChild(progressBar);
       progressContainer.appendChild(ticketsText);
@@ -406,7 +403,7 @@ document.addEventListener("DOMContentLoaded", () => {
       reservation.appendChild(reserveButton);
       reservation.appendChild(price);
 
-      // Assembler la carte
+      // Assemble the card
       cardContent.appendChild(bandName);
       cardContent.appendChild(dateTimeContainer);
       cardContent.appendChild(description);
@@ -416,7 +413,7 @@ document.addEventListener("DOMContentLoaded", () => {
       card.appendChild(cardImage);
       card.appendChild(cardContent);
 
-      // Ajouter les badges
+      // Add badges
       if (isSoldOut) {
         const soldOutBadge = document.createElement("div");
         soldOutBadge.className = "sold-out-badge";
@@ -432,7 +429,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return card;
     }
 
-    // Fonction pour créer les options de date
+    // Function to create date filter options
     function createDateOptions(data) {
       if (!dateDropdown) return;
 
@@ -441,13 +438,13 @@ document.addEventListener("DOMContentLoaded", () => {
       ].sort();
 
       dateDropdown.innerHTML = `
-        <h3 class="dropdown-title">Filtrer par date</h3>
+        <h3 class="dropdown-title">Filter by date</h3>
         <div class="date-option ${selectedDate === "all" ? "selected" : ""}">
           <input type="radio" name="date-filter" id="date-all" value="all" ${
             selectedDate === "all" ? "checked" : ""
           } hidden>
           <span class="radio-custom"></span>
-          <label for="date-all">Toutes les dates</label>
+          <label for="date-all">All dates</label>
         </div>
         ${uniqueDates
           .map(
@@ -462,24 +459,24 @@ document.addEventListener("DOMContentLoaded", () => {
           `
           )
           .join("")}
-        <button class="apply-button">Appliquer</button>
+        <button class="apply-button">Apply</button>
       `;
     }
 
-    // Charger les données et créer les cartes
+    // Load data and create cards
     fetch("data/festival.json")
       .then((response) => response.json())
       .then((data) => {
-        // Créer les cartes
+        // Create initial cards
         data.forEach((artist, index) => {
-          const card = createTicketCard(artist, index % 2 !== 0); // Alterner entre normal et reverse
+          const card = createTicketCard(artist, index % 2 !== 0); // Alternate between normal and reverse
           cardsContainer.appendChild(card);
         });
 
-        // Créer les options de date
+        // Create date options
         createDateOptions(data);
 
-        // Gestionnaire pour le dropdown de dates
+        // Date dropdown handler
         if (dateFilter && dateDropdown) {
           dateFilter.addEventListener("click", (e) => {
             e.stopPropagation();
@@ -487,7 +484,7 @@ document.addEventListener("DOMContentLoaded", () => {
             dateFilter.classList.toggle("active");
           });
 
-          // Gestionnaire pour les options
+          // Date dropdown option handler
           dateDropdown.addEventListener("click", (e) => {
             const dateOption = e.target.closest(".date-option");
             if (dateOption) {
@@ -499,7 +496,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
           });
 
-          // Gestionnaire pour le bouton Appliquer
+          // Apply button handler
           const applyButton = dateDropdown.querySelector(".apply-button");
           if (applyButton) {
             applyButton.addEventListener("click", () => {
@@ -508,7 +505,7 @@ document.addEventListener("DOMContentLoaded", () => {
             });
           }
 
-          // Fermer le dropdown quand on clique en dehors
+          // Close dropdown when clicking outside
           document.addEventListener("click", (e) => {
             if (
               !dateFilter.contains(e.target) &&
@@ -520,7 +517,7 @@ document.addEventListener("DOMContentLoaded", () => {
           });
         }
 
-        // Gestionnaire pour le bouton "Masquer les SOLD OUT"
+        // Hide sold out button handler
         if (hideButton) {
           hideButton.addEventListener("click", () => {
             hidingSoldOut = !hidingSoldOut;
@@ -529,14 +526,14 @@ document.addEventListener("DOMContentLoaded", () => {
           });
         }
 
-        // Gestionnaire pour le bouton de tri par prix
+        // Price sort button handler
         if (sortPriceButton) {
           sortPriceButton.addEventListener("click", () => {
             currentPriceSort = currentPriceSort === "asc" ? "desc" : "asc";
             sortPriceButton.innerHTML = `
               <span class="filter-icon">💰</span>
-              <span class="button-text">Prix: ${
-                currentPriceSort === "asc" ? "Croissant" : "Décroissant"
+              <span class="button-text">Price: ${
+                currentPriceSort === "asc" ? "Ascending" : "Descending"
               }</span>
             `;
             sortPriceButton.classList.toggle("active");
@@ -544,37 +541,59 @@ document.addEventListener("DOMContentLoaded", () => {
           });
         }
 
-        // Gestionnaire pour le bouton Reset
+        // Reset button handler
         if (resetButton) {
           resetButton.addEventListener("click", () => {
-            // Réinitialiser tous les filtres
+            // Reset all filters
             searchInput.value = "";
             hidingSoldOut = false;
             currentPriceSort = "asc";
             selectedDate = "all";
 
-            // Réinitialiser les classes active
+            // Reset active classes
             hideButton.classList.remove("active");
             sortPriceButton.classList.remove("active");
             dateFilter.classList.remove("active");
             dateDropdown.classList.remove("active");
 
-            // Réinitialiser le texte des boutons
+            // Reset button texts
             sortPriceButton.innerHTML = `
               <span class="filter-icon">💰</span>
-              <span class="button-text">Prix: Croissant</span>
+              <span class="button-text">Price: Ascending</span>
             `;
             dateFilter.innerHTML = `
               <span class="filter-icon">📅</span>
               <span class="button-text">Dates</span>
             `;
 
-            // Réappliquer les filtres
+            // Reset the date radio buttons
+            const allDatesRadio = dateDropdown.querySelector("#date-all");
+            if (allDatesRadio) {
+              allDatesRadio.checked = true;
+            }
+
+            // Reset the cards order to original state
+            const cards = Array.from(
+              cardsContainer.querySelectorAll(".card, .card-reverse")
+            );
+            cards.sort((a, b) => {
+              const indexA = Array.from(cardsContainer.children).indexOf(a);
+              const indexB = Array.from(cardsContainer.children).indexOf(b);
+              return indexA - indexB;
+            });
+
+            // Reapply alternating styles and reinsert cards
+            cards.forEach((card, index) => {
+              card.className = index % 2 !== 0 ? "card-reverse" : "card";
+              cardsContainer.appendChild(card);
+            });
+
+            // Reapply filters
             filterCards();
           });
         }
 
-        // Fonction pour trier les cartes par prix
+        // Function to sort cards by price
         function sortCards() {
           const cards = Array.from(
             cardsContainer.querySelectorAll(".card, .card-reverse")
@@ -587,14 +606,14 @@ document.addEventListener("DOMContentLoaded", () => {
               : priceB - priceA;
           });
 
-          // Réappliquer l'alternance des styles après le tri
+          // Reapply alternating styles after sorting
           cards.forEach((card, index) => {
             card.className = index % 2 !== 0 ? "card-reverse" : "card";
             cardsContainer.appendChild(card);
           });
         }
 
-        // Gestionnaire pour la barre de recherche
+        // Search input handler
         if (searchInput) {
           searchInput.addEventListener("input", () => {
             filterCards();
@@ -602,42 +621,44 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       })
       .catch((error) => {
-        console.error("Erreur:", error);
-        cardsContainer.innerHTML = `<p style="color: white;">Erreur lors du chargement des données: ${error.message}</p>`;
+        console.error("Error:", error);
+        cardsContainer.innerHTML = `<p style="color: white;">Error loading data: ${error.message}</p>`;
       });
 
-    // Ajouter cette fonction juste après la déclaration des variables
+    // Function to filter cards based on current criteria
     function filterCards() {
       const cards = cardsContainer.querySelectorAll(".card, .card-reverse");
       const searchTerm = searchInput.value.toLowerCase();
 
+      // eslint-disable-next-line no-unused-vars
       let visibleCards = 0;
+      // eslint-disable-next-line no-unused-vars
       let visibleSoldOutCards = 0;
 
       cards.forEach((card) => {
         const artistData = card.artistData;
         let shouldShow = true;
 
-        // Filtre de recherche
+        // Search filter
         if (searchTerm) {
           shouldShow = artistData.artist.toLowerCase().includes(searchTerm);
         }
 
-        // Filtre des dates
+        // Date filter
         if (shouldShow && selectedDate !== "all") {
           shouldShow = artistData.date === selectedDate;
         }
 
-        // Filtre SOLD OUT
+        // SOLD OUT filter
         if (shouldShow && hidingSoldOut) {
           const remainingTickets = 1000 - artistData.ticketsSold;
           shouldShow = remainingTickets >= 5;
         }
 
-        // Afficher ou cacher la carte
+        // Show or hide the card
         card.style.display = shouldShow ? "" : "none";
 
-        // Compter les cartes visibles
+        // Count visible cards
         if (shouldShow) {
           visibleCards++;
           if (card.querySelector(".sold-out-badge")) {
@@ -646,7 +667,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
 
-      // Mettre à jour le texte du bouton de filtre
+      // Update filter button text
       if (dateFilter) {
         const selectedText =
           selectedDate === "all" ? "Dates" : formatDate(selectedDate);
@@ -659,7 +680,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Ajouter cette fonction dans votre fichier main.js
+  // Initialize equalizer animation toggle
   function initializeEqualizerToggle() {
     const toggleButton = document.querySelector(".equalizer-toggle");
     const equalizer = document.querySelector(".equalizer");
@@ -673,6 +694,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Appeler la fonction au chargement
+  // Call the function at load
   initializeEqualizerToggle();
 });

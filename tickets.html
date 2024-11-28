@@ -1,5 +1,7 @@
+<!-- Document setup -->
 <!DOCTYPE html>
 <html lang="fr">
+  <!-- Head section: meta tags, title, and resource links -->
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,32 +9,50 @@
     <link rel="stylesheet" href="css/stylesheet.min.css" />
     <title>Réservations - Le Port de La Teste en Musique</title>
   </head>
+
   <body>
+    <!-- Header section with mobile menu button and banner -->
     <header>
-      <button class="burger-menu">
+      <!-- Mobile menu burger button -->
+      <button
+        class="burger-menu"
+        aria-label="Menu de navigation"
+        aria-expanded="false"
+      >
         <span></span>
         <span></span>
         <span></span>
       </button>
+
+      <!-- Festival banner image -->
       <img
         src="img/festival-techno-la-teste-banniere.jpg"
         alt="Bannière du festival"
         class="banner-img"
       />
     </header>
-    <div class="nav-and-equalizer">
+
+    <!-- Navigation and music player container -->
+    <div class="nav-and-equalizer" role="navigation">
+      <!-- Desktop navigation links -->
       <nav class="desktop-nav">
         <a href="index.html">Accueil</a>
         <a href="program.html">Programme</a>
         <a href="tickets.html" class="active">Billetterie</a>
         <a href="info.html">Infos Pratiques</a>
       </nav>
+
+      <!-- Music player with equalizer visualization -->
       <div class="equalizer-container">
+        <!-- Play/Pause toggle button -->
         <button class="equalizer-toggle" aria-label="Toggle music">
           <span class="play-icon">▶</span>
           <span class="pause-icon">⏸</span>
         </button>
+
+        <!-- Equalizer animation bars -->
         <div class="equalizer">
+          <!-- 25 span elements for equalizer bars -->
           <span></span>
           <span></span>
           <span></span>
@@ -59,15 +79,21 @@
           <span></span>
           <span></span>
         </div>
+
+        <!-- Background music audio element -->
         <audio id="background-music" loop>
           <source src="mp3/loop.mp3" type="audio/mpeg" />
           Your browser does not support the audio element.
         </audio>
       </div>
     </div>
+
+    <!-- Mobile navigation overlay menu -->
     <div class="menu-overlay">
       <nav class="mobile-nav">
+        <!-- Close button for mobile menu -->
         <button class="close-menu">×</button>
+        <!-- Mobile navigation links -->
         <a href="index.html">Accueil</a>
         <a href="program.html">Programme</a>
         <a href="tickets.html" class="active">Billetterie</a>
@@ -75,47 +101,61 @@
       </nav>
     </div>
 
-    <div class="search-container">
+    <!-- Search and filters section -->
+    <div class="search-container" role="search">
+      <!-- Search input field and button -->
       <div class="search-bar">
         <input
           type="text"
           id="search-input"
           placeholder="Rechercher un artiste..."
+          aria-label="Rechercher un artiste"
         />
-        <button class="search-button">
+        <!-- Search button with icon -->
+        <button class="search-button" aria-label="Lancer la recherche">
+          <!-- Search icon SVG -->
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
             height="24"
             viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
           >
             <circle cx="11" cy="11" r="8"></circle>
             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
           </svg>
         </button>
       </div>
-      <button class="filter-button" id="hide-sold-out">
-        <span class="filter-icon">🎫</span>
+
+      <!-- Filter buttons section -->
+      <button class="filter-button" id="hide-sold-out" aria-pressed="false">
+        <span class="filter-icon" aria-hidden="true">🎫</span>
         <span class="button-text">Masquer les SOLD OUT</span>
       </button>
-      <button class="filter-button" id="sort-price">
-        <span class="filter-icon">💰</span>
+      <button class="filter-button" id="sort-price" aria-pressed="false">
+        <span class="filter-icon" aria-hidden="true">💰</span>
         <span class="button-text">Prix: Croissant</span>
       </button>
-      <button class="filter-button date-filter" id="date-filter">
-        <span class="filter-icon">📅</span>
+      <button
+        class="filter-button date-filter"
+        id="date-filter"
+        aria-expanded="false"
+        aria-controls="date-dropdown"
+      >
+        <span class="filter-icon" aria-hidden="true">📅</span>
         <span class="button-text">Dates</span>
       </button>
-      <div class="date-dropdown" id="date-dropdown">
-        <!-- Les options seront générées dynamiquement -->
-      </div>
-      <button class="reset-button" id="reset-filters">
-        <span class="filter-icon">🔄</span>
+      <div
+        class="date-dropdown"
+        id="date-dropdown"
+        role="menu"
+        aria-hidden="true"
+      ></div>
+      <button
+        class="reset-button"
+        id="reset-filters"
+        aria-label="Réinitialiser tous les filtres"
+      >
+        <span class="filter-icon" aria-hidden="true">🔄</span>
         <span class="button-text">Reset</span>
       </button>
     </div>
@@ -126,7 +166,9 @@
       class="illu-secondaire"
     />
 
-    <div class="cards-container"></div>
+    <div class="cards-container" role="main" aria-label="Liste des billets">
+      <!-- Dynamic content -->
+    </div>
 
     <footer>
       <nav class="footer-nav">
