@@ -1,24 +1,12 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Ajout du code pour le menu burger au début du fichier
-  const menuToggle = document.querySelector(".menu-toggle");
-  const menuOverlay = document.querySelector(".menu-overlay");
-  const closeMenu = document.querySelector(".close-menu");
-
-  if (menuToggle && menuOverlay && closeMenu) {
-    menuToggle.addEventListener("click", () => {
-      menuOverlay.classList.add("active");
-    });
-
-    closeMenu.addEventListener("click", () => {
-      menuOverlay.classList.remove("active");
-    });
-
-    // Fermer le menu quand on clique sur un lien
-    const mobileNavLinks = document.querySelectorAll(".mobile-nav a");
-    mobileNavLinks.forEach((link) => {
-      link.addEventListener("click", () => {
-        menuOverlay.classList.remove("active");
-      });
+  // Fonction utilitaire pour formater les dates
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("fr-FR", {
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+      year: "numeric",
     });
   }
 
@@ -27,23 +15,59 @@ document.addEventListener("DOMContentLoaded", () => {
   const isInfoPage = window.location.pathname.includes("info.html");
   const isTicketsPage = window.location.pathname.includes("tickets.html");
 
+  // Ajout du code pour le menu burger au début du fichier
+  const menuToggle = document.querySelector(".burger-menu");
+  const menuOverlay = document.querySelector(".menu-overlay");
+  const closeMenu = document.querySelector(".close-menu");
+  const body = document.body;
+
+  if (menuToggle && menuOverlay && closeMenu) {
+    // Function to toggle menu state
+    const toggleMenu = (show) => {
+      menuOverlay.classList.toggle("active", show);
+      body.classList.toggle("menu-open", show);
+    };
+
+    // Open menu
+    menuToggle.addEventListener("click", () => {
+      toggleMenu(true);
+    });
+
+    // Close menu
+    closeMenu.addEventListener("click", () => {
+      toggleMenu(false);
+    });
+
+    // Close menu when clicking overlay (outside nav)
+    menuOverlay.addEventListener("click", (e) => {
+      if (e.target === menuOverlay) {
+        toggleMenu(false);
+      }
+    });
+
+    // Close menu when clicking links
+    const mobileNavLinks = document.querySelectorAll(".mobile-nav a");
+    mobileNavLinks.forEach((link) => {
+      link.addEventListener("click", () => {
+        toggleMenu(false);
+      });
+    });
+
+    // Close menu on escape key
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && menuOverlay.classList.contains("active")) {
+        toggleMenu(false);
+      }
+    });
+  }
+
   // Gestion de la page programme
   if (isProgramPage) {
     const programDays = document.querySelector(".program-days");
 
-    function formatDate(dateString) {
-      const date = new Date(dateString);
-      return date.toLocaleDateString("fr-FR", {
-        weekday: "long",
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-      });
-    }
-
-    function createArtistCard(artistData) {
+    function createProgramCard(artistData) {
       const card = document.createElement("div");
-      card.className = "card";
+      card.className = "program-card";
 
       const cardImage = document.createElement("div");
       cardImage.className = "card-image";
@@ -83,7 +107,7 @@ document.addEventListener("DOMContentLoaded", () => {
       description.style.display = "none";
 
       const infoButton = document.createElement("button");
-      infoButton.className = "info-button";
+      infoButton.className = "button-info";
       infoButton.textContent = "?";
       infoButton.addEventListener("click", () => {
         description.style.display =
@@ -133,7 +157,7 @@ document.addEventListener("DOMContentLoaded", () => {
           );
 
           sortedArtists.forEach((artist) => {
-            const card = createArtistCard(artist);
+            const card = createProgramCard(artist);
             dayCards.appendChild(card);
           });
 
@@ -176,218 +200,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const sortPriceButton = document.getElementById("sort-price");
     const resetButton = document.getElementById("reset-filters");
     const cardsContainer = document.querySelector(".cards-container");
-    let hidingSoldOut = false;
-    let currentPriceSort = "asc";
     const dateFilter = document.getElementById("date-filter");
     const dateDropdown = document.getElementById("date-dropdown");
+    let hidingSoldOut = false;
+    let currentPriceSort = "asc";
     let selectedDate = "all";
 
-    // Fonction pour appliquer l'alternance des styles
-    function updateCardStyles() {
-      const visibleCards = Array.from(
-        document.querySelectorAll(".card, .card-reverse")
-      );
-
-      visibleCards.forEach((card, index) => {
-        // Réinitialiser les classes
-        card.classList.remove("card", "card-reverse");
-        // Ajouter la classe appropriée selon la position
-        card.classList.add(index % 2 === 1 ? "card-reverse" : "card");
-      });
-    }
-
-    // Fonction pour trier les cartes par prix
-    function sortCardsByPrice(direction) {
-      const cards = Array.from(cardsContainer.children);
-
-      cards.sort((a, b) => {
-        const priceA = parseFloat(a.artistData.price);
-        const priceB = parseFloat(b.artistData.price);
-        return direction === "asc" ? priceA - priceB : priceB - priceA;
-      });
-
-      cardsContainer.innerHTML = "";
-      cards.forEach((card) => cardsContainer.appendChild(card));
-      updateCardStyles();
-    }
-
-    // Fonction pour mettre à jour le contenu des boutons en tenant compte du mode mobile
-    function updateButtonContent(button, icon, text) {
-      const isMobile = window.innerWidth <= 768;
-      button.innerHTML = `
-        <span class="filter-icon">${icon}</span>
-        ${!isMobile ? `<span class="button-text">${text}</span>` : ""}
-      `;
-    }
-
-    // Gestionnaire pour le bouton de tri par prix
-    if (sortPriceButton) {
-      sortPriceButton.addEventListener("click", () => {
-        currentPriceSort = currentPriceSort === "asc" ? "desc" : "asc";
-        sortPriceButton.setAttribute("data-sort", currentPriceSort);
-        updateButtonContent(
-          sortPriceButton,
-          "💰",
-          `Prix: ${currentPriceSort === "asc" ? "Croissant" : "Décroissant"}`
-        );
-        sortCardsByPrice(currentPriceSort);
-      });
-    }
-
-    // Fonction pour formater la date dans un format lisible
-    function formatDate(dateString) {
-      const date = new Date(dateString);
-      return date.toLocaleDateString("fr-FR", {
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-      });
-    }
-
-    // Fonction pour filtrer les cartes
-    function filterCards() {
-      const searchTerm = searchInput.value.toLowerCase();
-      const cards = document.querySelectorAll(".card, .card-reverse");
-
-      cards.forEach((card) => {
-        const artistData = card.artistData;
-        const artistName = card
-          .querySelector(".band-name")
-          .textContent.toLowerCase();
-        const description = card
-          .querySelector(".description")
-          .textContent.toLowerCase();
-        const cardDate = artistData.date;
-        const remainingTickets = 1000 - artistData.ticketsSold;
-        const isSoldOut = remainingTickets < 5;
-
-        const matchesDate = selectedDate === "all" || cardDate === selectedDate;
-        const matchesSearch =
-          artistName.includes(searchTerm) || description.includes(searchTerm);
-
-        if (matchesSearch && matchesDate && !(hidingSoldOut && isSoldOut)) {
-          card.style.display = "flex";
-        } else {
-          card.style.display = "none";
-        }
-      });
-
-      updateCardStyles();
-    }
-
-    // Gestionnaire d'événements pour la recherche
-    if (searchInput) {
-      searchInput.addEventListener("input", filterCards);
-    }
-
-    // Gestionnaire d'événements pour le bouton de filtrage
-    if (hideButton) {
-      updateButtonContent(hideButton, "🎫", "Masquer les SOLD OUT");
-
-      hideButton.addEventListener("click", () => {
-        hidingSoldOut = !hidingSoldOut;
-        hideButton.classList.toggle("active");
-        updateButtonContent(
-          hideButton,
-          "🎫",
-          hidingSoldOut
-            ? "Afficher tous les événements"
-            : "Masquer les SOLD OUT"
-        );
-        filterCards();
-      });
-    }
-
-    // Fonction de réinitialisation mise à jour
-    function resetFilters() {
-      // Réinitialiser la recherche
-      if (searchInput) {
-        searchInput.value = "";
-      }
-
-      // Réinitialiser le filtre SOLD OUT
-      if (hideButton) {
-        hidingSoldOut = false;
-        hideButton.classList.remove("active");
-        updateButtonContent(hideButton, "🎫", "Masquer les SOLD OUT");
-      }
-
-      // Réinitialiser le tri par prix
-      if (sortPriceButton) {
-        currentPriceSort = "asc";
-        sortPriceButton.setAttribute("data-sort", "asc");
-        updateButtonContent(sortPriceButton, "💰", "Prix: Croissant");
-      }
-
-      // Réinitialiser le filtre de date
-      if (dateFilter && dateDropdown) {
-        selectedDate = "all";
-        const allDatesOption = document.querySelector('input[value="all"]');
-        if (allDatesOption) {
-          allDatesOption.checked = true;
-        }
-        updateButtonContent(dateFilter, "📅", "Dates");
-        dateFilter.classList.remove("active");
-        dateDropdown.classList.remove("active");
-      }
-
-      // Recharger et réafficher toutes les cartes dans leur ordre initial
-      fetch("data/festival.json")
-        .then((response) => response.json())
-        .then((data) => {
-          if (!cardsContainer) return;
-
-          cardsContainer.innerHTML = "";
-
-          // Trier par date et heure
-          const sortedArtists = data.sort((a, b) => {
-            const dateA = new Date(`${a.date} ${a.time}`);
-            const dateB = new Date(`${b.date} ${b.time}`);
-            return dateA - dateB;
-          });
-
-          sortedArtists.forEach((artistData, index) => {
-            const card = createArtistCard(artistData, index);
-            cardsContainer.appendChild(card);
-          });
-
-          updateCardStyles();
-        })
-        .catch((error) => {
-          console.error("Erreur lors de la réinitialisation:", error);
-          if (cardsContainer) {
-            cardsContainer.innerHTML = `<p style="color: white;">Erreur lors du chargement des données: ${error.message}</p>`;
-          }
-        });
-    }
-
-    // Gestionnaire pour le bouton reset
-    if (resetButton) {
-      updateButtonContent(resetButton, "🔄", "Réinitialiser");
-    }
-
-    // Ajouter un écouteur pour le redimensionnement de la fenêtre
-    window.addEventListener("resize", () => {
-      updateButtonContent(
-        hideButton,
-        "🎫",
-        hidingSoldOut ? "Afficher tous les événements" : "Masquer les SOLD OUT"
-      );
-      updateButtonContent(
-        sortPriceButton,
-        "💰",
-        `Prix: ${currentPriceSort === "asc" ? "Croissant" : "Décroissant"}`
-      );
-      updateButtonContent(resetButton, "🔄", "Réinitialiser");
-    });
-
-    // Modification de la fonction createArtistCard pour stocker les données
-    function createArtistCard(artistData, index) {
+    // Fonction pour créer les cartes
+    function createTicketCard(artistData, isReverse = false) {
       const card = document.createElement("div");
-      card.className = index % 2 === 1 ? "card-reverse" : "card";
+      card.className = isReverse ? "card-reverse" : "card";
       card.artistData = artistData;
 
-      // Image section
       const cardImage = document.createElement("div");
       cardImage.className = "card-image";
       const img = document.createElement("img");
@@ -402,7 +226,6 @@ document.addEventListener("DOMContentLoaded", () => {
       img.alt = `Artiste : ${artistData.artist}`;
       cardImage.appendChild(img);
 
-      // Content section
       const cardContent = document.createElement("div");
       cardContent.className = "card-content";
 
@@ -504,118 +327,230 @@ document.addEventListener("DOMContentLoaded", () => {
       return card;
     }
 
-    // Fonction pour créer les options de dates à partir des données
+    // Fonction pour créer les options de date
     function createDateOptions(data) {
       if (!dateDropdown) return;
 
-      // Récupérer les dates uniques du JSON
       const uniqueDates = [
         ...new Set(data.map((artist) => artist.date)),
       ].sort();
 
-      // Créer le contenu HTML pour les options de dates
-      const dateOptionsHTML = `
-        <div class="date-options">
-          <label>
-            <input type="radio" name="date" value="all" checked>
-            <span>Toutes les dates</span>
-          </label>
-          ${uniqueDates
-            .map(
-              (date) => `
-            <label>
-              <input type="radio" name="date" value="${date}">
-              <span>${formatDate(date)}</span>
-            </label>
-          `
-            )
-            .join("")}
+      dateDropdown.innerHTML = `
+        <h3 class="dropdown-title">Filtrer par date</h3>
+        <div class="date-option ${selectedDate === "all" ? "selected" : ""}">
+          <input type="radio" name="date-filter" id="date-all" value="all" ${
+            selectedDate === "all" ? "checked" : ""
+          } hidden>
+          <span class="radio-custom"></span>
+          <label for="date-all">Toutes les dates</label>
         </div>
+        ${uniqueDates
+          .map(
+            (date) => `
+            <div class="date-option ${selectedDate === date ? "selected" : ""}">
+              <input type="radio" name="date-filter" id="date-${date}" value="${date}" ${
+              selectedDate === date ? "checked" : ""
+            } hidden>
+              <span class="radio-custom"></span>
+              <label for="date-${date}">${formatDate(date)}</label>
+            </div>
+          `
+          )
+          .join("")}
+        <button class="apply-button">Appliquer</button>
       `;
-
-      // Insérer les options dans le dropdown
-      dateDropdown.innerHTML = dateOptionsHTML;
-
-      // Ajouter les écouteurs d'événements pour les nouvelles options
-      const dateOptions = document.querySelectorAll('input[name="date"]');
-      dateOptions.forEach((option) => {
-        option.addEventListener("change", (e) => {
-          selectedDate = e.target.value;
-          const selectedText =
-            e.target.value === "all"
-              ? "Toutes les dates"
-              : formatDate(e.target.value);
-
-          updateButtonContent(dateFilter, "📅", selectedText);
-          dateDropdown.classList.remove("active");
-          dateFilter.classList.remove("active");
-
-          filterCards();
-        });
-      });
     }
 
-    // Modifier la partie du code qui charge les données JSON
+    // Charger les données et créer les cartes
     fetch("data/festival.json")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Erreur lors du chargement du fichier JSON");
-        }
-        return response.json();
-      })
+      .then((response) => response.json())
       .then((data) => {
-        if (!cardsContainer) {
-          throw new Error("Conteneur .cards-container non trouvé");
-        }
-
-        // Créer les options de dates avant de trier les artistes
-        createDateOptions(data);
-
-        const sortedArtists = data.sort((a, b) => {
-          const dateA = new Date(`${a.date} ${a.time}`);
-          const dateB = new Date(`${b.date} ${b.time}`);
-          return dateA - dateB;
-        });
-
-        sortedArtists.forEach((artistData, index) => {
-          const card = createArtistCard(artistData, index);
+        // Créer les cartes
+        data.forEach((artist, index) => {
+          const card = createTicketCard(artist, index % 2 !== 0); // Alterner entre normal et reverse
           cardsContainer.appendChild(card);
         });
+
+        // Créer les options de date
+        createDateOptions(data);
+
+        // Gestionnaire pour le dropdown de dates
+        if (dateFilter && dateDropdown) {
+          dateFilter.addEventListener("click", (e) => {
+            e.stopPropagation();
+            dateDropdown.classList.toggle("active");
+            dateFilter.classList.toggle("active");
+          });
+
+          // Gestionnaire pour les options
+          dateDropdown.addEventListener("click", (e) => {
+            const dateOption = e.target.closest(".date-option");
+            if (dateOption) {
+              const input = dateOption.querySelector('input[type="radio"]');
+              if (input) {
+                selectedDate = input.value;
+                filterCards();
+              }
+            }
+          });
+
+          // Gestionnaire pour le bouton Appliquer
+          const applyButton = dateDropdown.querySelector(".apply-button");
+          if (applyButton) {
+            applyButton.addEventListener("click", () => {
+              dateDropdown.classList.remove("active");
+              dateFilter.classList.remove("active");
+            });
+          }
+
+          // Fermer le dropdown quand on clique en dehors
+          document.addEventListener("click", (e) => {
+            if (
+              !dateFilter.contains(e.target) &&
+              !dateDropdown.contains(e.target)
+            ) {
+              dateDropdown.classList.remove("active");
+              dateFilter.classList.remove("active");
+            }
+          });
+        }
+
+        // Gestionnaire pour le bouton "Masquer les SOLD OUT"
+        if (hideButton) {
+          hideButton.addEventListener("click", () => {
+            hidingSoldOut = !hidingSoldOut;
+            hideButton.classList.toggle("active");
+            filterCards();
+          });
+        }
+
+        // Gestionnaire pour le bouton de tri par prix
+        if (sortPriceButton) {
+          sortPriceButton.addEventListener("click", () => {
+            currentPriceSort = currentPriceSort === "asc" ? "desc" : "asc";
+            sortPriceButton.innerHTML = `
+              <span class="filter-icon">💰</span>
+              <span class="button-text">Prix: ${
+                currentPriceSort === "asc" ? "Croissant" : "Décroissant"
+              }</span>
+            `;
+            sortPriceButton.classList.toggle("active");
+            sortCards();
+          });
+        }
+
+        // Gestionnaire pour le bouton Reset
+        if (resetButton) {
+          resetButton.addEventListener("click", () => {
+            // Réinitialiser tous les filtres
+            searchInput.value = "";
+            hidingSoldOut = false;
+            currentPriceSort = "asc";
+            selectedDate = "all";
+
+            // Réinitialiser les classes active
+            hideButton.classList.remove("active");
+            sortPriceButton.classList.remove("active");
+            dateFilter.classList.remove("active");
+            dateDropdown.classList.remove("active");
+
+            // Réinitialiser le texte des boutons
+            sortPriceButton.innerHTML = `
+              <span class="filter-icon">💰</span>
+              <span class="button-text">Prix: Croissant</span>
+            `;
+            dateFilter.innerHTML = `
+              <span class="filter-icon">📅</span>
+              <span class="button-text">Dates</span>
+            `;
+
+            // Réappliquer les filtres
+            filterCards();
+          });
+        }
+
+        // Fonction pour trier les cartes par prix
+        function sortCards() {
+          const cards = Array.from(
+            cardsContainer.querySelectorAll(".card, .card-reverse")
+          );
+          cards.sort((a, b) => {
+            const priceA = a.artistData.price;
+            const priceB = b.artistData.price;
+            return currentPriceSort === "asc"
+              ? priceA - priceB
+              : priceB - priceA;
+          });
+
+          // Réappliquer l'alternance des styles après le tri
+          cards.forEach((card, index) => {
+            card.className = index % 2 !== 0 ? "card-reverse" : "card";
+            cardsContainer.appendChild(card);
+          });
+        }
+
+        // Gestionnaire pour la barre de recherche
+        if (searchInput) {
+          searchInput.addEventListener("input", () => {
+            filterCards();
+          });
+        }
       })
       .catch((error) => {
         console.error("Erreur:", error);
-        if (cardsContainer) {
-          cardsContainer.innerHTML = `<p style="color: white;">Erreur lors du chargement des données: ${error.message}</p>`;
+        cardsContainer.innerHTML = `<p style="color: white;">Erreur lors du chargement des données: ${error.message}</p>`;
+      });
+
+    // Ajouter cette fonction juste après la déclaration des variables
+    function filterCards() {
+      const cards = cardsContainer.querySelectorAll(".card, .card-reverse");
+      const searchTerm = searchInput.value.toLowerCase();
+
+      let visibleCards = 0;
+      let visibleSoldOutCards = 0;
+
+      cards.forEach((card) => {
+        const artistData = card.artistData;
+        let shouldShow = true;
+
+        // Filtre de recherche
+        if (searchTerm) {
+          shouldShow = artistData.artist.toLowerCase().includes(searchTerm);
+        }
+
+        // Filtre des dates
+        if (shouldShow && selectedDate !== "all") {
+          shouldShow = artistData.date === selectedDate;
+        }
+
+        // Filtre SOLD OUT
+        if (shouldShow && hidingSoldOut) {
+          const remainingTickets = 1000 - artistData.ticketsSold;
+          shouldShow = remainingTickets >= 5;
+        }
+
+        // Afficher ou cacher la carte
+        card.style.display = shouldShow ? "" : "none";
+
+        // Compter les cartes visibles
+        if (shouldShow) {
+          visibleCards++;
+          if (card.querySelector(".sold-out-badge")) {
+            visibleSoldOutCards++;
+          }
         }
       });
 
-    // Ajouter ces gestionnaires d'événements après l'initialisation des variables
-    if (dateFilter && dateDropdown) {
-      // Initialiser le texte du bouton
-      updateButtonContent(dateFilter, "📅", "Dates");
+      // Mettre à jour le texte du bouton de filtre
+      if (dateFilter) {
+        const selectedText =
+          selectedDate === "all" ? "Dates" : formatDate(selectedDate);
 
-      // Gestionnaire pour le bouton de filtre par date
-      dateFilter.addEventListener("click", (e) => {
-        e.stopPropagation(); // Empêcher la propagation au document
-        dateFilter.classList.toggle("active");
-        dateDropdown.classList.toggle("active");
-      });
-
-      // Fermer le dropdown quand on clique ailleurs sur la page
-      document.addEventListener("click", (e) => {
-        if (
-          !dateFilter.contains(e.target) &&
-          !dateDropdown.contains(e.target)
-        ) {
-          dateFilter.classList.remove("active");
-          dateDropdown.classList.remove("active");
-        }
-      });
-    }
-
-    // Ajouter l'écouteur d'événement pour le bouton reset
-    if (resetButton) {
-      resetButton.addEventListener("click", resetFilters);
+        dateFilter.innerHTML = `
+          <span class="filter-icon">📅</span>
+          <span class="button-text">${selectedText}</span>
+        `;
+      }
     }
   }
 

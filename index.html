@@ -9,20 +9,26 @@
   </head>
   <body>
     <header>
+      <button class="burger-menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
       <img
         src="img/festival-techno-la-teste-banniere.jpg"
         alt="Bannière du festival"
         class="banner-img"
       />
     </header>
-    <nav class="main-nav">
-      <div class="nav-container">
-        <a href="index.html" class="nav-link active">Accueil</a>
-        <a href="program.html" class="nav-link">Programme</a>
-        <a href="tickets.html" class="nav-link">Billetterie</a>
-        <a href="info.html" class="nav-link">Infos Pratiques</a>
-      </div>
-    </nav>
+    <div class="menu-overlay">
+      <nav class="mobile-nav">
+        <button class="close-menu">×</button>
+        <a href="index.html" class="active">Accueil</a>
+        <a href="program.html">Programme</a>
+        <a href="tickets.html">Billetterie</a>
+        <a href="info.html">Infos Pratiques</a>
+      </nav>
+    </div>
     <main class="home-container">
       <section class="hero-section">
         <h1 class="hero-title">FESTIVAL ÉLECTRONIQUE</h1>

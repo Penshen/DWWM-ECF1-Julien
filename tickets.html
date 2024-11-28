@@ -9,21 +9,26 @@
   </head>
   <body>
     <header>
+      <button class="burger-menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
       <img
         src="img/festival-techno-la-teste-banniere.jpg"
         alt="Bannière du festival"
         class="banner-img"
       />
     </header>
-
-    <nav class="main-nav">
-      <div class="nav-container">
-        <a href="index.html" class="nav-link">Accueil</a>
-        <a href="program.html" class="nav-link">Programme</a>
-        <a href="tickets.html" class="nav-link active">Billetterie</a>
-        <a href="info.html" class="nav-link">Infos Pratiques</a>
-      </div>
-    </nav>
+    <div class="menu-overlay">
+      <nav class="mobile-nav">
+        <button class="close-menu">×</button>
+        <a href="index.html">Accueil</a>
+        <a href="program.html">Programme</a>
+        <a href="tickets.html" class="active">Billetterie</a>
+        <a href="info.html">Infos Pratiques</a>
+      </nav>
+    </div>
 
     <div class="search-container">
       <div class="search-bar">
@@ -51,22 +56,22 @@
       </div>
       <button class="filter-button" id="hide-sold-out">
         <span class="filter-icon">🎫</span>
-        Masquer les SOLD OUT
+        <span class="button-text">Masquer les SOLD OUT</span>
       </button>
       <button class="filter-button" id="sort-price">
         <span class="filter-icon">💰</span>
-        Prix: Croissant
+        <span class="button-text">Prix: Croissant</span>
       </button>
       <button class="filter-button date-filter" id="date-filter">
         <span class="filter-icon">📅</span>
-        Dates
+        <span class="button-text">Dates</span>
       </button>
       <div class="date-dropdown" id="date-dropdown">
         <!-- Les options seront générées dynamiquement -->
       </div>
       <button class="reset-button" id="reset-filters">
         <span class="filter-icon">🔄</span>
-        Reset
+        <span class="button-text">Reset</span>
       </button>
     </div>
 
