@@ -1,4 +1,3 @@
-// Initialize audio functionality when DOM is fully loaded
 document.addEventListener("DOMContentLoaded", () => {
   const audio = document.getElementById("background-music");
   const equalizer = document.querySelector(".equalizer");
@@ -441,7 +440,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return card;
     }
 
-    // Function to create date filter options
+    // Function to create date filter options - remove the apply button
     function createDateOptions(data) {
       if (!dateDropdown) return;
 
@@ -461,17 +460,16 @@ document.addEventListener("DOMContentLoaded", () => {
         ${uniqueDates
           .map(
             (date) => `
-            <div class="date-option ${selectedDate === date ? "selected" : ""}">
-              <input type="radio" name="date-filter" id="date-${date}" value="${date}" ${
+          <div class="date-option ${selectedDate === date ? "selected" : ""}">
+            <input type="radio" name="date-filter" id="date-${date}" value="${date}" ${
               selectedDate === date ? "checked" : ""
             } hidden>
-              <span class="radio-custom"></span>
-              <label for="date-${date}">${formatDate(date)}</label>
-            </div>
-          `
+            <span class="radio-custom"></span>
+            <label for="date-${date}">${formatDate(date)}</label>
+          </div>
+        `
           )
           .join("")}
-        <button class="apply-button">Apply</button>
       `;
     }
 
@@ -503,28 +501,25 @@ document.addEventListener("DOMContentLoaded", () => {
               const input = dateOption.querySelector('input[type="radio"]');
               if (input) {
                 selectedDate = input.value;
+
+                // Update all date filter buttons (mobile and desktop)
+                const allDateFilters =
+                  document.querySelectorAll("#date-filter");
+                const selectedText =
+                  selectedDate === "all" ? "Dates" : formatDate(selectedDate);
+
+                allDateFilters.forEach((dateBtn) => {
+                  dateBtn.innerHTML = `
+                    <span class="filter-icon">📅</span>
+                    <span class="button-text">${selectedText}</span>
+                  `;
+                });
+
+                // Close dropdown and apply filters
+                dateDropdown.classList.remove("active");
+                dateFilter.classList.remove("active");
                 filterCards();
               }
-            }
-          });
-
-          // Apply button handler
-          const applyButton = dateDropdown.querySelector(".apply-button");
-          if (applyButton) {
-            applyButton.addEventListener("click", () => {
-              dateDropdown.classList.remove("active");
-              dateFilter.classList.remove("active");
-            });
-          }
-
-          // Close dropdown when clicking outside
-          document.addEventListener("click", (e) => {
-            if (
-              !dateFilter.contains(e.target) &&
-              !dateDropdown.contains(e.target)
-            ) {
-              dateDropdown.classList.remove("active");
-              dateFilter.classList.remove("active");
             }
           });
         }
@@ -555,54 +550,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Reset button handler
         if (resetButton) {
-          resetButton.addEventListener("click", () => {
-            // Reset all filters
-            searchInput.value = "";
-            hidingSoldOut = false;
-            currentPriceSort = "asc";
-            selectedDate = "all";
-
-            // Reset active classes
-            hideButton.classList.remove("active");
-            sortPriceButton.classList.remove("active");
-            dateFilter.classList.remove("active");
-            dateDropdown.classList.remove("active");
-
-            // Reset button texts
-            sortPriceButton.innerHTML = `
-              <span class="filter-icon">💰</span>
-              <span class="button-text">Price: Ascending</span>
-            `;
-            dateFilter.innerHTML = `
-              <span class="filter-icon">📅</span>
-              <span class="button-text">Dates</span>
-            `;
-
-            // Reset the date radio buttons
-            const allDatesRadio = dateDropdown.querySelector("#date-all");
-            if (allDatesRadio) {
-              allDatesRadio.checked = true;
-            }
-
-            // Reset the cards order to original state
-            const cards = Array.from(
-              cardsContainer.querySelectorAll(".card, .card-reverse")
-            );
-            cards.sort((a, b) => {
-              const indexA = Array.from(cardsContainer.children).indexOf(a);
-              const indexB = Array.from(cardsContainer.children).indexOf(b);
-              return indexA - indexB;
-            });
-
-            // Reapply alternating styles and reinsert cards
-            cards.forEach((card, index) => {
-              card.className = index % 2 !== 0 ? "card-reverse" : "card";
-              cardsContainer.appendChild(card);
-            });
-
-            // Reapply filters
-            filterCards();
-          });
+          resetButton.addEventListener("click", performReset);
         }
 
         // Function to sort cards by price
@@ -629,6 +577,160 @@ document.addEventListener("DOMContentLoaded", () => {
         if (searchInput) {
           searchInput.addEventListener("input", () => {
             filterCards();
+          });
+        }
+
+        // Add this inside your tickets page specific functionality (if (isTicketsPage) { ... })
+        const filterToggle = document.querySelector(".filter-toggle");
+        const filterMenu = document.querySelector(".filter-menu");
+        const filterButtons = document.querySelector(".search-container");
+        const filterButtonsContainer = document.querySelector(
+          ".filter-menu .filter-buttons"
+        );
+
+        if (
+          filterToggle &&
+          filterMenu &&
+          filterButtons &&
+          filterButtonsContainer
+        ) {
+          // Toggle filter menu
+          filterToggle.addEventListener("click", () => {
+            filterMenu.classList.toggle("active");
+            filterToggle.classList.toggle("active");
+          });
+
+          // Move filter buttons to menu on mobile
+          function moveFilterButtons() {
+            if (window.innerWidth <= 768) {
+              filterButtonsContainer.innerHTML = ""; // Clear existing buttons
+
+              // Clone buttons and maintain their IDs and classes
+              const buttons = filterButtons.querySelectorAll(
+                ".filter-button, .reset-button"
+              );
+              buttons.forEach((button) => {
+                const clone = button.cloneNode(true);
+
+                // Handle date filter button
+                if (clone.id === "date-filter") {
+                  // Create a mobile-specific dropdown
+                  const mobileDropdown = dateDropdown.cloneNode(true);
+                  mobileDropdown.id = "date-dropdown-mobile";
+                  mobileDropdown.classList.add("mobile-date-dropdown");
+
+                  clone.addEventListener("click", (e) => {
+                    e.stopPropagation();
+                    mobileDropdown.classList.toggle("active");
+                    clone.classList.toggle("active");
+                  });
+
+                  // Handle date selection in mobile dropdown
+                  mobileDropdown.addEventListener("click", (e) => {
+                    const dateOption = e.target.closest(".date-option");
+                    if (dateOption) {
+                      const input = dateOption.querySelector(
+                        'input[type="radio"]'
+                      );
+                      if (input) {
+                        selectedDate = input.value;
+
+                        // Update all date filter buttons
+                        const allDateFilters =
+                          document.querySelectorAll("#date-filter");
+                        const selectedText =
+                          selectedDate === "all"
+                            ? "Dates"
+                            : formatDate(selectedDate);
+
+                        allDateFilters.forEach((dateBtn) => {
+                          dateBtn.innerHTML = `
+                            <span class="filter-icon">📅</span>
+                            <span class="button-text">${selectedText}</span>
+                          `;
+                        });
+
+                        // Close dropdown and apply filters
+                        mobileDropdown.classList.remove("active");
+                        clone.classList.remove("active");
+                        filterCards();
+                      }
+                    }
+                  });
+
+                  // Create container for the button and its dropdown
+                  const dateFilterContainer = document.createElement("div");
+                  dateFilterContainer.className =
+                    "mobile-date-filter-container";
+                  dateFilterContainer.appendChild(clone);
+                  dateFilterContainer.appendChild(mobileDropdown);
+                  filterButtonsContainer.appendChild(dateFilterContainer);
+                }
+
+                // Handle hide sold out button
+                else if (clone.id === "hide-sold-out") {
+                  clone.addEventListener("click", () => {
+                    hidingSoldOut = !hidingSoldOut;
+                    // Update both mobile and desktop buttons
+                    const allHideButtons =
+                      document.querySelectorAll("#hide-sold-out");
+                    allHideButtons.forEach((btn) =>
+                      btn.classList.toggle("active")
+                    );
+                    filterCards();
+                  });
+                  filterButtonsContainer.appendChild(clone);
+                }
+
+                // Handle price sort button
+                else if (clone.id === "sort-price") {
+                  clone.addEventListener("click", () => {
+                    currentPriceSort =
+                      currentPriceSort === "asc" ? "desc" : "asc";
+                    const newText = `Price: ${
+                      currentPriceSort === "asc" ? "Ascending" : "Descending"
+                    }`;
+
+                    // Update both mobile and desktop buttons
+                    const allSortButtons =
+                      document.querySelectorAll("#sort-price");
+                    allSortButtons.forEach((btn) => {
+                      btn.innerHTML = `
+                        <span class="filter-icon">💰</span>
+                        <span class="button-text">${newText}</span>
+                      `;
+                      btn.classList.toggle("active");
+                    });
+
+                    sortCards();
+                  });
+                  filterButtonsContainer.appendChild(clone);
+                }
+
+                // Handle reset button
+                else if (clone.id === "reset-filters") {
+                  clone.addEventListener("click", performReset);
+                  filterButtonsContainer.appendChild(clone);
+                }
+              });
+            }
+          }
+
+          // Initial move
+          moveFilterButtons();
+
+          // Update on resize
+          window.addEventListener("resize", moveFilterButtons);
+
+          // Close menu when clicking outside
+          document.addEventListener("click", (e) => {
+            if (
+              !filterMenu.contains(e.target) &&
+              !filterToggle.contains(e.target)
+            ) {
+              filterMenu.classList.remove("active");
+              filterToggle.classList.remove("active");
+            }
           });
         }
       })
@@ -689,6 +791,71 @@ document.addEventListener("DOMContentLoaded", () => {
           <span class="button-text">${selectedText}</span>
         `;
       }
+    }
+
+    // First, create a reusable reset function
+    function performReset() {
+      // Reset all filters
+      searchInput.value = "";
+      hidingSoldOut = false;
+      currentPriceSort = "asc";
+      selectedDate = "all";
+
+      // Reset active classes and button texts
+      const hideButtons = document.querySelectorAll("#hide-sold-out");
+      const sortButtons = document.querySelectorAll("#sort-price");
+      const dateFilters = document.querySelectorAll("#date-filter");
+
+      hideButtons.forEach((btn) => btn.classList.remove("active"));
+      sortButtons.forEach((btn) => {
+        btn.classList.remove("active");
+        btn.innerHTML = `
+          <span class="filter-icon">💰</span>
+          <span class="button-text">Price: Ascending</span>
+        `;
+      });
+      dateFilters.forEach((btn) => {
+        btn.classList.remove("active");
+        btn.innerHTML = `
+          <span class="filter-icon">📅</span>
+          <span class="button-text">Dates</span>
+        `;
+      });
+
+      // Reset the date radio buttons
+      const allDateDropdowns = document.querySelectorAll(
+        "#date-dropdown, #date-dropdown-mobile"
+      );
+      allDateDropdowns.forEach((dropdown) => {
+        const allDatesRadio = dropdown.querySelector("#date-all");
+        if (allDatesRadio) {
+          allDatesRadio.checked = true;
+        }
+        dropdown.classList.remove("active");
+      });
+
+      // Close mobile menu if open
+      const filterMenu = document.querySelector(".filter-menu");
+      const filterToggle = document.querySelector(".filter-toggle");
+      if (filterMenu && filterToggle) {
+        filterMenu.classList.remove("active");
+        filterToggle.classList.remove("active");
+      }
+
+      // Fetch fresh data and recreate cards
+      fetch("data/festival.json")
+        .then((response) => response.json())
+        .then((data) => {
+          cardsContainer.innerHTML = "";
+          data.forEach((artist, index) => {
+            const card = createTicketCard(artist, index % 2 !== 0);
+            cardsContainer.appendChild(card);
+          });
+          filterCards();
+        })
+        .catch((error) => {
+          console.error("Error resetting cards:", error);
+        });
     }
   }
 
