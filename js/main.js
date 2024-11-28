@@ -265,19 +265,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Info page specific functionality
   if (isInfoPage) {
-    // Toggle functionality for info page
+    // Toggle section functionality
     const toggleButtons = document.querySelectorAll(".toggle-button");
+
     toggleButtons.forEach((button) => {
       button.addEventListener("click", () => {
-        const content = button.nextElementSibling;
-        const icon = button.querySelector(".toggle-icon");
+        // Get the content element
+        const content = document.getElementById(
+          button.getAttribute("aria-controls")
+        );
+        const isExpanded = button.getAttribute("aria-expanded") === "true";
 
-        // Toggle the active class on both button and content
-        button.classList.toggle("active");
-        content.classList.toggle("active");
+        // Toggle button state
+        button.setAttribute("aria-expanded", !isExpanded);
 
-        // Update the icon
-        icon.textContent = button.classList.contains("active") ? "×" : "+";
+        // Toggle content visibility
+        if (content) {
+          content.classList.toggle("active");
+          content.hidden = isExpanded;
+
+          // Toggle plus/minus icon
+          const icon = button.querySelector(".toggle-icon");
+          if (icon) {
+            icon.textContent = isExpanded ? "+" : "-";
+          }
+        }
       });
     });
     return;
