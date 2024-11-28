@@ -1,4 +1,97 @@
 document.addEventListener("DOMContentLoaded", () => {
+  const audio = document.getElementById("background-music");
+  const equalizer = document.querySelector(".equalizer");
+  const equalizerToggle = document.querySelector(".equalizer-toggle");
+
+  if (audio && equalizer && equalizerToggle) {
+    // Get saved audio time and state from localStorage
+    const savedTime = parseFloat(localStorage.getItem("audioTime") || "0");
+    const wasPlaying =
+      localStorage.getItem("audioPlaying") === "false" ? false : true;
+
+    // Set the audio time to the saved position
+    audio.currentTime = savedTime;
+
+    // Function to toggle play/pause state
+    const togglePlayPause = () => {
+      if (audio.paused) {
+        // Try to play
+        audio
+          .play()
+          .then(() => {
+            equalizer.classList.remove("paused");
+            equalizerToggle.classList.remove("paused");
+            localStorage.setItem("audioPlaying", "true");
+          })
+          .catch((error) => {
+            console.error("Audio playback failed:", error);
+            equalizer.classList.add("paused");
+            equalizerToggle.classList.add("paused");
+            localStorage.setItem("audioPlaying", "false");
+          });
+      } else {
+        // Pause
+        audio.pause();
+        equalizer.classList.add("paused");
+        equalizerToggle.classList.add("paused");
+        localStorage.setItem("audioPlaying", "false");
+      }
+    };
+
+    // Click event for the toggle button
+    equalizerToggle.addEventListener("click", togglePlayPause);
+
+    // Update state when audio ends
+    audio.addEventListener("ended", () => {
+      equalizer.classList.add("paused");
+      equalizerToggle.classList.add("paused");
+      localStorage.setItem("audioPlaying", "false");
+    });
+
+    // Update state when audio is paused
+    audio.addEventListener("pause", () => {
+      equalizer.classList.add("paused");
+      equalizerToggle.classList.add("paused");
+      localStorage.setItem("audioPlaying", "false");
+    });
+
+    // Update state when audio plays
+    audio.addEventListener("play", () => {
+      equalizer.classList.remove("paused");
+      equalizerToggle.classList.remove("paused");
+      localStorage.setItem("audioPlaying", "true");
+    });
+
+    // Save current time periodically
+    setInterval(() => {
+      if (!audio.paused) {
+        localStorage.setItem("audioTime", audio.currentTime.toString());
+      }
+    }, 1000);
+
+    // Handle page visibility change
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) {
+        localStorage.setItem("audioTime", audio.currentTime.toString());
+      }
+    });
+
+    // Always try to play on page load
+    audio
+      .play()
+      .then(() => {
+        equalizer.classList.remove("paused");
+        equalizerToggle.classList.remove("paused");
+        localStorage.setItem("audioPlaying", "true");
+      })
+      .catch((error) => {
+        console.log("Autoplay blocked:", error);
+        equalizer.classList.add("paused");
+        equalizerToggle.classList.add("paused");
+        localStorage.setItem("audioPlaying", "false");
+      });
+  }
+
   // Fonction utilitaire pour formater les dates
   function formatDate(dateString) {
     const date = new Date(dateString);
@@ -212,6 +305,15 @@ document.addEventListener("DOMContentLoaded", () => {
       card.className = isReverse ? "card-reverse" : "card";
       card.artistData = artistData;
 
+      // Calculate if sold out
+      const remainingTickets = 1000 - artistData.ticketsSold;
+      const isSoldOut = remainingTickets < 5;
+
+      // Add sold-out data attribute to the card
+      if (isSoldOut) {
+        card.setAttribute("data-sold-out", "true");
+      }
+
       const cardImage = document.createElement("div");
       cardImage.className = "card-image";
       const img = document.createElement("img");
@@ -270,10 +372,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const percentage = (artistData.ticketsSold / 1000) * 100;
       progressBar.style.width = `${percentage}%`;
 
-      // Calculer les tickets restants et le statut SOLD OUT
-      const remainingTickets = 1000 - artistData.ticketsSold;
-      const isSoldOut = remainingTickets < 5;
-
       const ticketsText = document.createElement("span");
       ticketsText.className = "tickets-text";
       ticketsText.textContent = isSoldOut
@@ -292,7 +390,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const reserveButton = document.createElement("button");
       reserveButton.className = "reserve-button";
-      reserveButton.textContent = "JE RÉSERVE MA PLACE !";
+      reserveButton.textContent = isSoldOut
+        ? "SOLD OUT"
+        : "JE RÉSERVE MA PLACE !";
+      if (!isSoldOut) {
+        reserveButton.addEventListener("click", () => {
+          // Your reservation logic here
+        });
+      }
 
       const price = document.createElement("span");
       price.className = "price";
@@ -556,22 +661,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Ajouter cette fonction dans votre fichier main.js
   function initializeEqualizerToggle() {
-    const toggleButtons = document.querySelectorAll(".equalizer-toggle");
+    const toggleButton = document.querySelector(".equalizer-toggle");
+    const equalizer = document.querySelector(".equalizer");
 
-    toggleButtons.forEach((button) => {
-      button.addEventListener("click", function () {
-        // Trouver l'equalizer associé (le plus proche)
-        const equalizer = this.closest("header").querySelector(".equalizer");
-
-        // Toggle la classe paused sur le bouton
+    if (toggleButton && equalizer) {
+      toggleButton.addEventListener("click", function () {
+        // Toggle the classes
         this.classList.toggle("paused");
-
-        // Toggle la classe paused sur l'equalizer
-        if (equalizer) {
-          equalizer.classList.toggle("paused");
-        }
+        equalizer.classList.toggle("paused");
       });
-    });
+    }
   }
 
   // Appeler la fonction au chargement
