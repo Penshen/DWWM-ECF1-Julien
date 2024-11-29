@@ -151,14 +151,6 @@ To deploy the website on a hosting service:
 
 ---
 
-Contributing:
-
-1. Contributions are welcome. Fork the repository and submit a pull request.
-2. Ensure that changes are tested before committing.
-3. Write clear descriptions for all new features or fixes.
-
----
-
 Additional Notes:
 
 - Ensure The `festival.json` file is properly formatted and placed in the `data/` folder.
