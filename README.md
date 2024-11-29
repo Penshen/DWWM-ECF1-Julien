@@ -14,7 +14,8 @@ An interactive, responsive, and feature-rich website designed for **Le Port de L
 4. [Technologies Used](#technologies-used)  
 5. [Installation](#installation)  
 6. [Usage](#usage)  
-7. [Deployment](#deployment)  
+7. [Deployment](#deployment)
+8. [Additonal Notes](#additional-notes)
 
 ---
 
@@ -151,7 +152,7 @@ To deploy the website on a hosting service:
 
 ---
 
-Additional Notes:
+### Additional Notes:
 
 - Ensure The `festival.json` file is properly formatted and placed in the `data/` folder.
 - Use modern browsers for optimal performance, as some features may not work in older browsers.
