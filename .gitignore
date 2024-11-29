@@ -1,0 +1,28 @@
+# Ignorer les dépendances
+node_modules/
+eslint.config.mjs
+
+# Ignorer les fichiers de production ou générés
+dist/
+*.log
+
+# Ignorer les fichiers temporaires ou système
+.DS_Store
+Thumbs.db
+*.tmp
+
+# Ignorer les fichiers de configuration utilisateur
+*.env
+*.local
+
+# Ignorer les dossiers ou fichiers spécifiques aux éditeurs
+.vscode/
+.idea/
+*.iml
+
+# Ignorer les fichiers de lock générés par npm ou Yarn
+package-lock.json
+yarn.lock
+
+# Ignorer les fichiers Sass compilés si applicable
+Sass/
